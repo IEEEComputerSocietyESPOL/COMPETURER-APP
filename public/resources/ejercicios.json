@@ -1,0 +1,793 @@
+[
+  {
+    "category": "Arrays",
+    "categoryIcon": "📦",
+    "categoryColor": "#4A90D9",
+    "title": "Distinct Values",
+    "difficulty": "basic",
+    "description": "Given an array of N integers, print the number of distinct values in the array.",
+    "inputFormat": "The first line contains N. The second line contains N integers separated by spaces.",
+    "outputFormat": "A single integer representing the count of distinct values.",
+    "examples": [
+      {
+        "input": "5\n1 2 2 3 1",
+        "output": "3"
+      }
+    ],
+    "hiddenTests": [
+      { "input": "6\n4 4 4 4 4 4", "output": "1" },
+      { "input": "4\n10 20 30 40", "output": "4" },
+      { "input": "1\n100", "output": "1" },
+      { "input": "5\n-1 -2 -1 -2 0", "output": "3" }
+    ]
+  },
+  {
+    "category": "Arrays",
+    "categoryIcon": "📦",
+    "categoryColor": "#4A90D9",
+    "title": "Maximum Subarray Sum",
+    "difficulty": "basic",
+    "description": "Given an array of N integers, find the maximum sum of a contiguous subarray (Kadane's algorithm).",
+    "inputFormat": "The first line contains N. The second line contains N integers separated by spaces.",
+    "outputFormat": "A single integer with the maximum subarray sum.",
+    "examples": [
+      { "input": "8\n-2 1 -3 4 -1 2 1 -5", "output": "6" }
+    ],
+    "hiddenTests": [
+      { "input": "3\n-1 -2 -3", "output": "-1" },
+      { "input": "5\n5 4 -1 7 8", "output": "23" },
+      { "input": "1\n-10", "output": "-10" },
+      { "input": "6\n0 0 0 0 0 0", "output": "0" }
+    ]
+  },
+  {
+    "category": "Arrays",
+    "categoryIcon": "📦",
+    "categoryColor": "#4A90D9",
+    "title": "Prefix Sum Queries",
+    "difficulty": "medium",
+    "description": "Given an array of N integers and Q queries, each query asks for the sum of elements between index L and R (1-indexed, inclusive).",
+    "inputFormat": "The first line contains N and Q. The second line contains N integers. The next Q lines each contain two integers L and R.",
+    "outputFormat": "For each query, print the sum on a separate line.",
+    "examples": [
+      { "input": "5 3\n1 2 3 4 5\n1 3\n2 4\n1 5", "output": "6\n9\n15" }
+    ],
+    "hiddenTests": [
+      { "input": "4 2\n10 20 30 40\n2 3\n1 4", "output": "50\n100" },
+      { "input": "3 1\n5 5 5\n2 2", "output": "5" },
+      { "input": "2 2\n1 2\n1 1\n2 2", "output": "1\n2" },
+      { "input": "1 1\n10\n1 1", "output": "10" }
+    ]
+  },
+  {
+    "category": "Strings",
+    "categoryIcon": "🔤",
+    "categoryColor": "#E74C3C",
+    "title": "Balanced Brackets",
+    "difficulty": "basic",
+    "description": "Given a string containing only the characters '(', ')', '{', '}', '[' and ']', determine if the input string is valid. A string is valid if every opening bracket is closed by the same type of bracket and in the correct order.",
+    "inputFormat": "A single line containing the bracket string.",
+    "outputFormat": "Print 'YES' if the string is valid, 'NO' otherwise.",
+    "examples": [
+      { "input": "()[]{}", "output": "YES" },
+      { "input": "(]", "output": "NO" }
+    ],
+    "hiddenTests": [
+      { "input": "{[()]}", "output": "YES" },
+      { "input": "([)]", "output": "NO" },
+      { "input": "", "output": "YES" },
+      { "input": "(((", "output": "NO" },
+      { "input": ")))", "output": "NO" }
+    ]
+  },
+  {
+    "category": "Strings",
+    "categoryIcon": "🔤",
+    "categoryColor": "#E74C3C",
+    "title": "Palindrome Check",
+    "difficulty": "basic",
+    "description": "Given a string S, determine whether it reads the same forwards and backwards (ignoring case).",
+    "inputFormat": "A single line containing the string S.",
+    "outputFormat": "Print 'YES' if S is a palindrome, 'NO' otherwise.",
+    "examples": [
+      { "input": "racecar", "output": "YES" },
+      { "input": "hello", "output": "NO" }
+    ],
+    "hiddenTests": [
+      { "input": "Madam", "output": "YES" },
+      { "input": "abcba", "output": "YES" },
+      { "input": "a", "output": "YES" },
+      { "input": "Aa", "output": "YES" },
+      { "input": "ab", "output": "NO" }
+    ]
+  },
+  {
+    "category": "Strings",
+    "categoryIcon": "🔤",
+    "categoryColor": "#E74C3C",
+    "title": "Anagram Detection",
+    "difficulty": "medium",
+    "description": "Given two strings A and B of the same length, determine if B is an anagram of A (i.e., B contains the same characters as A in any order).",
+    "inputFormat": "Two lines, each containing one string.",
+    "outputFormat": "Print 'YES' if B is an anagram of A, 'NO' otherwise.",
+    "examples": [
+      { "input": "listen\nsilent", "output": "YES" },
+      { "input": "hello\nworld", "output": "NO" }
+    ],
+    "hiddenTests": [
+      { "input": "triangle\nintegral", "output": "YES" },
+      { "input": "abc\nabd", "output": "NO" },
+      { "input": "aabb\nbbaa", "output": "YES" },
+      { "input": "apple\npale", "output": "NO" }
+    ]
+  },
+  {
+    "category": "Graphs",
+    "categoryIcon": "🕸️",
+    "categoryColor": "#27AE60",
+    "title": "Connected Components",
+    "difficulty": "medium",
+    "description": "Given an undirected graph with N nodes and M edges, count the number of connected components.",
+    "inputFormat": "The first line contains N and M. The next M lines each contain two integers U and V representing an undirected edge between U and V.",
+    "outputFormat": "A single integer: the number of connected components.",
+    "examples": [
+      { "input": "5 3\n1 2\n2 3\n4 5", "output": "2" }
+    ],
+    "hiddenTests": [
+      { "input": "4 0", "output": "4" },
+      { "input": "6 5\n1 2\n2 3\n3 4\n4 5\n5 6", "output": "1" },
+      { "input": "3 1\n1 2", "output": "2" },
+      { "input": "1 0", "output": "1" }
+    ]
+  },
+  {
+    "category": "Graphs",
+    "categoryIcon": "🕸️",
+    "categoryColor": "#27AE60",
+    "title": "Odd Cycle Check",
+    "difficulty": "hard",
+    "description": "Given an undirected graph with N nodes and M edges, determine if the graph contains an odd-length cycle (i.e., check if the graph is NOT bipartite).",
+    "inputFormat": "The first line contains N and M. The next M lines each contain two integers U and V representing an undirected edge.",
+    "outputFormat": "Print 'YES' if an odd cycle exists, 'NO' otherwise.",
+    "examples": [
+      { "input": "3 3\n1 2\n2 3\n3 1", "output": "YES" },
+      { "input": "4 4\n1 2\n2 3\n3 4\n4 1", "output": "NO" }
+    ],
+    "hiddenTests": [
+      { "input": "5 5\n1 2\n1 3\n2 4\n3 4\n4 5", "output": "NO" },
+      { "input": "5 6\n1 2\n2 3\n3 1\n3 4\n4 5\n5 3", "output": "YES" },
+      { "input": "2 1\n1 2", "output": "NO" },
+      { "input": "5 0", "output": "NO" }
+    ]
+  },
+  {
+    "category": "Graphs",
+    "categoryIcon": "🕸️",
+    "categoryColor": "#27AE60",
+    "title": "Shortest Path BFS",
+    "difficulty": "medium",
+    "description": "Given an unweighted undirected graph with N nodes and M edges, find the shortest path (in number of edges) between node 1 and node N. If no path exists, print -1.",
+    "inputFormat": "The first line contains N and M. The next M lines each contain two integers U and V representing an undirected edge.",
+    "outputFormat": "A single integer: the shortest path length from node 1 to node N, or -1 if unreachable.",
+    "examples": [
+      { "input": "5 5\n1 2\n2 3\n3 5\n1 4\n4 5", "output": "2" }
+    ],
+    "hiddenTests": [
+      { "input": "4 2\n1 2\n3 4", "output": "-1" },
+      { "input": "2 1\n1 2", "output": "1" },
+      { "input": "3 2\n1 2\n2 3", "output": "2" },
+      { "input": "1 0", "output": "0" }
+    ]
+  },
+  {
+    "category": "Dynamic Programming",
+    "categoryIcon": "🧠",
+    "categoryColor": "#8E44AD",
+    "title": "Fibonacci Number",
+    "difficulty": "basic",
+    "description": "Given an integer N, compute the N-th Fibonacci number. F(0) = 0, F(1) = 1, F(N) = F(N-1) + F(N-2).",
+    "inputFormat": "A single integer N (0 ≤ N ≤ 40).",
+    "outputFormat": "A single integer: the N-th Fibonacci number.",
+    "examples": [
+      { "input": "6", "output": "8" }
+    ],
+    "hiddenTests": [
+      { "input": "0", "output": "0" },
+      { "input": "10", "output": "55" },
+      { "input": "1", "output": "1" },
+      { "input": "2", "output": "1" },
+      { "input": "40", "output": "102334155" }
+    ]
+  },
+  {
+    "category": "Dynamic Programming",
+    "categoryIcon": "🧠",
+    "categoryColor": "#8E44AD",
+    "title": "Longest Increasing Subsequence",
+    "difficulty": "medium",
+    "description": "Given an array of N integers, find the length of the longest strictly increasing subsequence.",
+    "inputFormat": "The first line contains N. The second line contains N integers separated by spaces.",
+    "outputFormat": "A single integer: the length of the LIS.",
+    "examples": [
+      { "input": "8\n3 1 8 2 5 3 6 4", "output": "4" }
+    ],
+    "hiddenTests": [
+      { "input": "5\n5 4 3 2 1", "output": "1" },
+      { "input": "5\n1 2 3 4 5", "output": "5" },
+      { "input": "1\n10", "output": "1" },
+      { "input": "6\n1 3 2 3 4 8", "output": "5" }
+    ]
+  },
+  {
+    "category": "Dynamic Programming",
+    "categoryIcon": "🧠",
+    "categoryColor": "#8E44AD",
+    "title": "0/1 Knapsack",
+    "difficulty": "hard",
+    "description": "Given N items each with a weight W[i] and value V[i], and a knapsack with capacity C, find the maximum total value you can carry without exceeding the capacity. Each item can be used at most once.",
+    "inputFormat": "The first line contains N and C. The next N lines each contain two integers W[i] and V[i].",
+    "outputFormat": "A single integer: the maximum achievable value.",
+    "examples": [
+      { "input": "4 8\n2 3\n3 4\n4 5\n5 6", "output": "10" }
+    ],
+    "hiddenTests": [
+      { "input": "3 5\n1 1\n3 4\n4 5", "output": "5" },
+      { "input": "1 10\n10 100", "output": "100" },
+      { "input": "2 5\n6 10\n7 20", "output": "0" },
+      { "input": "3 10\n5 10\n5 10\n5 10", "output": "20" }
+    ]
+  },
+  {
+    "category": "Dynamic Programming",
+    "categoryIcon": "🧠",
+    "categoryColor": "#8E44AD",
+    "title": "Coin Change",
+    "difficulty": "medium",
+    "description": "Given a list of coin denominations and a target amount, find the minimum number of coins needed to reach the target. You may use each denomination any number of times. If it is impossible, print -1.",
+    "inputFormat": "The first line contains N (number of coin types) and T (target). The second line contains N integers representing coin values.",
+    "outputFormat": "A single integer: the minimum number of coins, or -1 if impossible.",
+    "examples": [
+      { "input": "3 11\n1 5 6", "output": "2" }
+    ],
+    "hiddenTests": [
+      { "input": "2 3\n2 4", "output": "-1" },
+      { "input": "1 7\n1", "output": "7" },
+      { "input": "3 0\n1 2 5", "output": "0" },
+      { "input": "2 6\n3 3", "output": "2" }
+    ]
+  },
+  {
+    "category": "Greedy",
+    "categoryIcon": "💡",
+    "categoryColor": "#F39C12",
+    "title": "Activity Selection",
+    "difficulty": "medium",
+    "description": "Given N activities each with a start time S[i] and finish time F[i], select the maximum number of non-overlapping activities. Two activities overlap if one starts before the other finishes.",
+    "inputFormat": "The first line contains N. The next N lines each contain two integers S[i] and F[i].",
+    "outputFormat": "A single integer: the maximum number of non-overlapping activities.",
+    "examples": [
+      { "input": "6\n1 4\n3 5\n0 6\n5 7\n3 8\n5 9", "output": "3" }
+    ],
+    "hiddenTests": [
+      { "input": "1\n0 1", "output": "1" },
+      { "input": "3\n1 2\n2 3\n3 4", "output": "3" },
+      { "input": "2\n1 10\n2 5", "output": "1" },
+      { "input": "4\n1 2\n1 3\n1 4\n1 5", "output": "1" }
+    ]
+  },
+  {
+    "category": "Greedy",
+    "categoryIcon": "💡",
+    "categoryColor": "#F39C12",
+    "title": "Minimum Spanning Cost",
+    "difficulty": "hard",
+    "description": "You have N jobs, each with a deadline D[i] and a profit P[i]. Each job takes 1 unit of time. Maximize total profit by scheduling jobs before or on their deadlines.",
+    "inputFormat": "The first line contains N. The next N lines each contain D[i] and P[i].",
+    "outputFormat": "A single integer: the maximum achievable profit.",
+    "examples": [
+      { "input": "5\n2 100\n1 19\n2 27\n1 25\n3 15", "output": "142" }
+    ],
+    "hiddenTests": [
+      { "input": "3\n1 50\n1 30\n1 10", "output": "50" },
+      { "input": "2\n2 10\n2 20", "output": "30" },
+      { "input": "4\n1 10\n2 10\n3 10\n4 10", "output": "40" },
+      { "input": "1\n5 100", "output": "100" }
+    ]
+  },
+  {
+    "category": "Sorting",
+    "categoryIcon": "🔃",
+    "categoryColor": "#1ABC9C",
+    "title": "Merge Sort Count",
+    "difficulty": "hard",
+    "description": "Given an array of N integers, count the number of inversions (pairs i < j where A[i] > A[j]) using a merge sort approach.",
+    "inputFormat": "The first line contains N. The second line contains N integers separated by spaces.",
+    "outputFormat": "A single integer: the number of inversions.",
+    "examples": [
+      { "input": "5\n5 4 3 2 1", "output": "10" }
+    ],
+    "hiddenTests": [
+      { "input": "4\n1 2 3 4", "output": "0" },
+      { "input": "3\n3 1 2", "output": "2" },
+      { "input": "2\n2 1", "output": "1" },
+      { "input": "1\n100", "output": "0" }
+    ]
+  },
+  {
+    "category": "Sorting",
+    "categoryIcon": "🔃",
+    "categoryColor": "#1ABC9C",
+    "title": "Sort by Frequency",
+    "difficulty": "medium",
+    "description": "Given an array of N integers, sort them in decreasing order of frequency. Elements with equal frequency should be sorted in increasing order of value.",
+    "inputFormat": "The first line contains N. The second line contains N integers separated by spaces.",
+    "outputFormat": "N integers on one line separated by spaces in the described order.",
+    "examples": [
+      { "input": "7\n4 5 6 5 4 3 4", "output": "4 4 4 5 5 3 6" }
+    ],
+    "hiddenTests": [
+      { "input": "4\n1 1 2 2", "output": "1 1 2 2" },
+      { "input": "3\n7 7 7", "output": "7 7 7" },
+      { "input": "5\n10 30 20 10 20", "output": "10 10 20 20 30" },
+      { "input": "1\n5", "output": "5" }
+    ]
+  },
+  {
+    "category": "Math & Number Theory",
+    "categoryIcon": "➗",
+    "categoryColor": "#E67E22",
+    "title": "Greatest Common Divisor",
+    "difficulty": "basic",
+    "description": "Given two positive integers A and B, compute their greatest common divisor using the Euclidean algorithm.",
+    "inputFormat": "A single line with two integers A and B.",
+    "outputFormat": "A single integer: gcd(A, B).",
+    "examples": [
+      { "input": "48 18", "output": "6" }
+    ],
+    "hiddenTests": [
+      { "input": "100 75", "output": "25" },
+      { "input": "13 7", "output": "1" },
+      { "input": "10 10", "output": "10" },
+      { "input": "1 100", "output": "1" }
+    ]
+  },
+  {
+    "category": "Math & Number Theory",
+    "categoryIcon": "➗",
+    "categoryColor": "#E67E22",
+    "title": "Prime Sieve",
+    "difficulty": "medium",
+    "description": "Given an integer N, print all prime numbers up to and including N using the Sieve of Eratosthenes.",
+    "inputFormat": "A single integer N (2 ≤ N ≤ 10^6).",
+    "outputFormat": "All prime numbers up to N, each on a separate line.",
+    "examples": [
+      { "input": "20", "output": "2\n3\n5\n7\n11\n13\n17\n19" }
+    ],
+    "hiddenTests": [
+      { "input": "10", "output": "2\n3\n5\n7" },
+      { "input": "2", "output": "2" },
+      { "input": "3", "output": "2\n3" },
+      { "input": "5", "output": "2\n3\n5" }
+    ]
+  },
+  {
+    "category": "Math & Number Theory",
+    "categoryIcon": "➗",
+    "categoryColor": "#E67E22",
+    "title": "Power Modulo",
+    "difficulty": "medium",
+    "description": "Given three integers B, E, and M, compute (B^E) mod M efficiently using fast exponentiation.",
+    "inputFormat": "A single line with three integers B, E, and M.",
+    "outputFormat": "A single integer: (B^E) mod M.",
+    "examples": [
+      { "input": "2 10 1000000007", "output": "1024" }
+    ],
+    "hiddenTests": [
+      { "input": "3 4 5", "output": "1" },
+      { "input": "5 0 7", "output": "1" },
+      { "input": "10 2 100", "output": "0" },
+      { "input": "2 5 3", "output": "2" }
+    ]
+  },
+  {
+    "category": "Binary Search",
+    "categoryIcon": "🔍",
+    "categoryColor": "#2980B9",
+    "title": "Find Target",
+    "difficulty": "basic",
+    "description": "Given a sorted array of N distinct integers and a target value T, find the index (1-indexed) of T in the array. If T is not present, print -1.",
+    "inputFormat": "The first line contains N and T. The second line contains N sorted integers.",
+    "outputFormat": "A single integer: the 1-indexed position of T, or -1 if not found.",
+    "examples": [
+      { "input": "6 7\n1 3 5 7 9 11", "output": "4" }
+    ],
+    "hiddenTests": [
+      { "input": "5 6\n1 2 3 4 5", "output": "-1" },
+      { "input": "3 1\n1 2 3", "output": "1" },
+      { "input": "1 10\n10", "output": "1" },
+      { "input": "2 5\n1 6", "output": "-1" }
+    ]
+  },
+  {
+    "category": "Binary Search",
+    "categoryIcon": "🔍",
+    "categoryColor": "#2980B9",
+    "title": "Minimum Maximum Value",
+    "difficulty": "hard",
+    "description": "You have N bags and M candies to distribute. Each bag must get at least 1 candy. Find the minimum possible value of the maximum number of candies in any single bag, when distributing exactly M candies across N bags.",
+    "inputFormat": "A single line with two integers N and M.",
+    "outputFormat": "A single integer: the minimum possible maximum.",
+    "examples": [
+      { "input": "3 10", "output": "4" }
+    ],
+    "hiddenTests": [
+      { "input": "5 5", "output": "1" },
+      { "input": "2 7", "output": "4" },
+      { "input": "1 100", "output": "100" },
+      { "input": "10 11", "output": "2" }
+    ]
+  },
+  {
+    "category": "Trees",
+    "categoryIcon": "🌳",
+    "categoryColor": "#16A085",
+    "title": "Tree Diameter",
+    "difficulty": "medium",
+    "description": "Given a tree with N nodes, find its diameter — the length of the longest path between any two nodes (measured in number of edges).",
+    "inputFormat": "The first line contains N. The next N-1 lines each contain two integers U and V representing an undirected edge.",
+    "outputFormat": "A single integer: the diameter of the tree.",
+    "examples": [
+      { "input": "5\n1 2\n2 3\n3 4\n4 5", "output": "4" }
+    ],
+    "hiddenTests": [
+      { "input": "1", "output": "0" },
+      { "input": "4\n1 2\n1 3\n1 4", "output": "2" },
+      { "input": "3\n1 2\n2 3", "output": "2" },
+      { "input": "2\n1 2", "output": "1" }
+    ]
+  },
+  {
+    "category": "Trees",
+    "categoryIcon": "🌳",
+    "categoryColor": "#16A085",
+    "title": "Subtree Node Count",
+    "difficulty": "medium",
+    "description": "Given a rooted tree with N nodes (root = 1), for each node print the size of its subtree (number of nodes including itself).",
+    "inputFormat": "The first line contains N. The next N-1 lines each contain two integers U and V representing a parent-child edge (U is the parent).",
+    "outputFormat": "N integers, one per line: the subtree size of node i for i = 1 to N.",
+    "examples": [
+      { "input": "5\n1 2\n1 3\n2 4\n2 5", "output": "5\n3\n1\n1\n1" }
+    ],
+    "hiddenTests": [
+      { "input": "3\n1 2\n1 3", "output": "3\n1\n1" },
+      { "input": "1", "output": "1" },
+      { "input": "2\n1 2", "output": "2\n1" },
+      { "input": "4\n1 2\n2 3\n3 4", "output": "4\n3\n2\n1" }
+    ]
+  },
+  {
+    "category": "Data Structures",
+    "categoryIcon": "🗂️",
+    "categoryColor": "#C0392B",
+    "title": "Stack Operations",
+    "difficulty": "basic",
+    "description": "Simulate a stack. Given Q operations of two types: '1 X' means push integer X onto the stack, and '2' means pop and print the top element. If the stack is empty during a pop, print -1.",
+    "inputFormat": "The first line contains Q. The next Q lines contain operations.",
+    "outputFormat": "For each '2' operation, print the popped value on a new line.",
+    "examples": [
+      { "input": "5\n1 10\n1 20\n2\n2\n2", "output": "20\n10\n-1" }
+    ],
+    "hiddenTests": [
+      { "input": "3\n2\n1 5\n2", "output": "-1\n5" },
+      { "input": "1\n2", "output": "-1" },
+      { "input": "2\n1 100\n2", "output": "100" },
+      { "input": "4\n1 5\n1 6\n2\n2", "output": "6\n5" }
+    ]
+  },
+  {
+    "category": "Data Structures",
+    "categoryIcon": "🗂️",
+    "categoryColor": "#C0392B",
+    "title": "Sliding Window Maximum",
+    "difficulty": "hard",
+    "description": "Given an array of N integers and a window of size K, find the maximum value in every contiguous window of size K as it slides from left to right.",
+    "inputFormat": "The first line contains N and K. The second line contains N integers.",
+    "outputFormat": "N-K+1 integers separated by spaces: the maximum of each window.",
+    "examples": [
+      { "input": "8 3\n1 3 -1 -3 5 3 6 7", "output": "3 3 5 5 6 7" }
+    ],
+    "hiddenTests": [
+      { "input": "5 1\n4 3 2 1 5", "output": "4 3 2 1 5" },
+      { "input": "4 4\n2 1 5 3", "output": "5" },
+      { "input": "3 2\n10 20 30", "output": "20 30" },
+      { "input": "6 3\n1 1 1 1 1 1", "output": "1 1 1 1" }
+    ]
+  },
+  {
+    "category": "Data Structures",
+    "categoryIcon": "🗂️",
+    "categoryColor": "#C0392B",
+    "title": "Range Minimum Query",
+    "difficulty": "hard",
+    "description": "Given an array of N integers and Q queries, each query asks for the minimum element between index L and R (1-indexed, inclusive). Use a Sparse Table for O(1) per query after O(N log N) preprocessing.",
+    "inputFormat": "The first line contains N and Q. The second line contains N integers. The next Q lines each contain L and R.",
+    "outputFormat": "For each query, print the minimum value on a separate line.",
+    "examples": [
+      { "input": "5 3\n2 4 1 6 3\n1 5\n2 4\n3 3", "output": "1\n1\n1" }
+    ],
+    "hiddenTests": [
+      { "input": "4 2\n7 2 5 1\n1 3\n2 4", "output": "2\n1" },
+      { "input": "1 1\n100\n1 1", "output": "100" },
+      { "input": "3 3\n1 2 3\n1 1\n2 2\n3 3", "output": "1\n2\n3" },
+      { "input": "5 1\n5 4 3 2 1\n1 5", "output": "1" }
+    ]
+  },
+  {
+    "category": "Two Pointers",
+    "categoryIcon": "👆",
+    "categoryColor": "#D35400",
+    "title": "Two Sum Sorted",
+    "difficulty": "basic",
+    "description": "Given a sorted array of N integers and a target value T, find two distinct indices i and j such that A[i] + A[j] = T. Print the two indices (1-indexed). If no pair exists, print -1.",
+    "inputFormat": "The first line contains N and T. The second line contains N sorted integers.",
+    "outputFormat": "Two integers i j (1-indexed), or -1 if no such pair exists.",
+    "examples": [
+      { "input": "6 9\n2 3 4 5 7 9", "output": "1 5" }
+    ],
+    "hiddenTests": [
+      { "input": "4 100\n1 2 3 4", "output": "-1" },
+      { "input": "4 5\n1 2 3 4", "output": "1 4" },
+      { "input": "2 10\n5 5", "output": "1 2" },
+      { "input": "3 6\n1 2 5", "output": "1 3" }
+    ]
+  },
+  {
+    "category": "Two Pointers",
+    "categoryIcon": "👆",
+    "categoryColor": "#D35400",
+    "title": "Longest Subarray Without Repeats",
+    "difficulty": "medium",
+    "description": "Given an array of N integers, find the length of the longest contiguous subarray that contains no duplicate values.",
+    "inputFormat": "The first line contains N. The second line contains N integers.",
+    "outputFormat": "A single integer: the length of the longest subarray with all distinct values.",
+    "examples": [
+      { "input": "7\n1 2 3 1 2 3 4", "output": "4" }
+    ],
+    "hiddenTests": [
+      { "input": "5\n1 1 1 1 1", "output": "1" },
+      { "input": "6\n1 2 3 4 5 6", "output": "6" },
+      { "input": "1\n10", "output": "1" },
+      { "input": "3\n1 2 1", "output": "2" }
+    ]
+  },
+  {
+    "category": "Implementation",
+    "categoryIcon": "⚙️",
+    "categoryColor": "#7F8C8D",
+    "title": "Rumour Spread",
+    "difficulty": "basic",
+    "description": "N people are numbered 1 to N. Person 1 knows a rumour. Each day, every person who knows the rumour tells all their friends. Find the day on which person N first hears the rumour. If person N never hears it, print -1.",
+    "inputFormat": "The first line contains N and M. The next M lines each contain two integers U and V representing a friendship.",
+    "outputFormat": "A single integer: the day person N hears the rumour, or -1.",
+    "examples": [
+      { "input": "4 4\n1 2\n2 3\n3 4\n1 3", "output": "2" }
+    ],
+    "hiddenTests": [
+      { "input": "3 1\n1 2", "output": "-1" },
+      { "input": "2 1\n1 2", "output": "1" },
+      { "input": "5 0", "output": "-1" },
+      { "input": "3 2\n1 2\n2 3", "output": "2" }
+    ]
+  },
+  {
+    "category": "Implementation",
+    "categoryIcon": "⚙️",
+    "categoryColor": "#7F8C8D",
+    "title": "Matrix Rotation",
+    "difficulty": "medium",
+    "description": "Given an N×N integer matrix, rotate it 90 degrees clockwise in-place and print the result.",
+    "inputFormat": "The first line contains N. The next N lines each contain N integers representing the matrix rows.",
+    "outputFormat": "N lines each containing N integers: the rotated matrix.",
+    "examples": [
+      { "input": "3\n1 2 3\n4 5 6\n7 8 9", "output": "7 4 1\n8 5 2\n9 6 3" }
+    ],
+    "hiddenTests": [
+      { "input": "2\n1 2\n3 4", "output": "3 1\n4 2" },
+      { "input": "1\n5", "output": "5" },
+      { "input": "4\n1 1 1 1\n2 2 2 2\n3 3 3 3\n4 4 4 4", "output": "4 3 2 1\n4 3 2 1\n4 3 2 1\n4 3 2 1" },
+      { "input": "2\n10 20\n30 40", "output": "30 10\n40 20" }
+    ]
+  },
+  {
+    "category": "Arrays",
+    "categoryIcon": "📦",
+    "categoryColor": "#4A90D9",
+    "title": "Maximum Rectangle in Histogram",
+    "difficulty": "ieee-master",
+    "description": "Given an array of N non-negative integers representing the heights of bars in a histogram (each bar has width 1), find the area of the largest rectangle that can be formed within the histogram.",
+    "inputFormat": "The first line contains N. The second line contains N non-negative integers representing bar heights.",
+    "outputFormat": "A single integer: the maximum rectangle area.",
+    "examples": [
+      { "input": "7\n2 1 5 6 2 3 1", "output": "10" }
+    ],
+    "hiddenTests": [
+      { "input": "6\n6 2 5 4 5 1", "output": "12" },
+      { "input": "1\n5", "output": "5" },
+      { "input": "5\n1 1 1 1 1", "output": "5" },
+      { "input": "4\n10 10 10 10", "output": "40" },
+      { "input": "3\n0 0 0", "output": "0" }
+    ]
+  },
+  {
+    "category": "Strings",
+    "categoryIcon": "🔤",
+    "categoryColor": "#E74C3C",
+    "title": "Suffix Array Construction",
+    "difficulty": "ieee-master",
+    "description": "Given a string S, build its suffix array. Answer Q queries: (L, R, P), count how many suffixes in positions L to R (1-indexed) start with the pattern prefix P.",
+    "inputFormat": "String S. Q. Next Q lines: L, R, P.",
+    "outputFormat": "For each query, print the count.",
+    "examples": [
+      { "input": "banana\n2\n1 6 an\n1 6 b", "output": "2\n1" }
+    ],
+    "hiddenTests": [
+      { "input": "abracadabra\n2\n1 11 abr\n3 7 a", "output": "2\n3" },
+      { "input": "aaa\n1\n1 3 a", "output": "3" },
+      { "input": "banana\n1\n1 6 z", "output": "0" },
+      { "input": "mississippi\n1\n1 11 i", "output": "4" }
+    ]
+  },
+  {
+    "category": "Graphs",
+    "categoryIcon": "🕸️",
+    "categoryColor": "#27AE60",
+    "title": "Strongly Connected Components",
+    "difficulty": "ieee-master",
+    "description": "Find all SCCs in a directed graph. Print the number of SCCs and nodes in each SCC sorted.",
+    "inputFormat": "N and M. Next M lines are directed edges.",
+    "outputFormat": "Number of SCCs. List of nodes for each SCC sorted.",
+    "examples": [
+      { "input": "8 9\n1 2\n2 3\n3 1\n3 4\n4 5\n5 6\n6 4\n7 6\n8 7", "output": "4\n1 2 3\n4 5 6\n7\n8" }
+    ],
+    "hiddenTests": [
+      { "input": "3 3\n1 2\n2 3\n3 1", "output": "1\n1 2 3" },
+      { "input": "4 2\n1 2\n3 4", "output": "4\n1\n2\n3\n4" },
+      { "input": "2 2\n1 2\n2 1", "output": "1\n1 2" },
+      { "input": "5 0", "output": "5\n1\n2\n3\n4\n5" }
+    ]
+  },
+  {
+    "category": "Dynamic Programming",
+    "categoryIcon": "🧠",
+    "categoryColor": "#8E44AD",
+    "title": "Optimal Matrix Chain Multiplication",
+    "difficulty": "ieee-master",
+    "description": "Find the minimum number of scalar multiplications needed to compute the product of N matrices.",
+    "inputFormat": "N. Next line: N+1 integers representing dimensions.",
+    "outputFormat": "A single integer.",
+    "examples": [
+      { "input": "3\n10 30 5 60", "output": "4500" }
+    ],
+    "hiddenTests": [
+      { "input": "4\n40 20 30 10 30", "output": "26000" },
+      { "input": "1\n5 10", "output": "0" },
+      { "input": "2\n10 20 30", "output": "6000" },
+      { "input": "5\n1 2 3 4 5 6", "output": "68" }
+    ]
+  },
+  {
+    "category": "Trees",
+    "categoryIcon": "🌳",
+    "categoryColor": "#16A085",
+    "title": "Heavy-Light Decomposition Queries",
+    "difficulty": "ieee-master",
+    "description": "Support node value update and path maximum value query using HLD.",
+    "inputFormat": "N. N node values. N-1 edges. Q. Operations (1 U X or 2 U W).",
+    "outputFormat": "Result for each query 2.",
+    "examples": [
+      { "input": "5\n4 2 6 3 1\n1 2\n1 3\n3 4\n3 5\n3\n2 2 4\n1 3 10\n2 2 4", "output": "6\n10" }
+    ],
+    "hiddenTests": [
+      { "input": "3\n1 2 3\n1 2\n1 3\n2\n2 2 3\n1 1 100", "output": "3" },
+      { "input": "2\n10 20\n1 2\n2\n2 1 2\n2 2 1", "output": "20\n20" },
+      { "input": "1\n50\n1\n2 1 1", "output": "50" },
+      { "input": "4\n1 1 1 1\n1 2\n2 3\n3 4\n2\n1 2 10\n2 1 4", "output": "10" }
+    ]
+  },
+  {
+    "category": "Math & Number Theory",
+    "categoryIcon": "➗",
+    "categoryColor": "#E67E22",
+    "title": "Chinese Remainder Theorem",
+    "difficulty": "ieee-master",
+    "description": "Find the smallest non-negative integer X satisfying congruences X ≡ R[i] (mod M[i]).",
+    "inputFormat": "K congruences. R[i] and M[i].",
+    "outputFormat": "X or -1.",
+    "examples": [
+      { "input": "3\n2 3\n3 5\n2 7", "output": "23" }
+    ],
+    "hiddenTests": [
+      { "input": "2\n1 2\n0 3", "output": "3" },
+      { "input": "1\n5 11", "output": "5" },
+      { "input": "2\n0 2\n0 3", "output": "0" },
+      { "input": "2\n2 3\n3 4", "output": "11" }
+    ]
+  },
+  {
+    "category": "Data Structures",
+    "categoryIcon": "🗂️",
+    "categoryColor": "#C0392B",
+    "title": "Persistent Segment Tree",
+    "difficulty": "ieee-master",
+    "description": "Versioned array updates and range sums.",
+    "inputFormat": "N, Q. N integers. Operations (1 V X or 2 T L R).",
+    "outputFormat": "Sum for type 2 queries.",
+    "examples": [
+      { "input": "5 4\n1 2 3 4 5\n1 3 10\n2 0 1 5\n2 1 1 5\n2 1 3 3", "output": "15\n22\n10" }
+    ],
+    "hiddenTests": [
+      { "input": "3 3\n7 8 9\n1 1 1\n2 0 1 3\n2 1 1 3", "output": "24\n18" },
+      { "input": "1 1\n5\n2 0 1 1", "output": "5" },
+      { "input": "2 2\n1 1\n1 1 10\n2 1 1 2", "output": "11" },
+      { "input": "4 2\n1 1 1 1\n1 4 0\n2 1 1 4", "output": "3" }
+    ]
+  },
+  {
+    "category": "Greedy",
+    "categoryIcon": "💡",
+    "categoryColor": "#F39C12",
+    "title": "Optimal Task Scheduling with Penalties",
+    "difficulty": "ieee-master",
+    "description": "Minimize total weighted tardiness on a single machine.",
+    "inputFormat": "N tasks. Processing time T[i], deadline D[i], penalty W[i].",
+    "outputFormat": "Minimum total weighted tardiness.",
+    "examples": [
+      { "input": "3\n2 4 3\n1 2 5\n3 6 2", "output": "4" }
+    ],
+    "hiddenTests": [
+      { "input": "2\n5 3 10\n1 6 1", "output": "20" },
+      { "input": "1\n3 5 7", "output": "0" },
+      { "input": "2\n10 5 1\n1 2 10", "output": "60" },
+      { "input": "3\n1 1 1\n1 1 1\n1 1 1", "output": "3" }
+    ]
+  },
+  {
+    "category": "Binary Search",
+    "categoryIcon": "🔍",
+    "categoryColor": "#2980B9",
+    "title": "K-th Smallest in Sorted Matrix",
+    "difficulty": "ieee-master",
+    "description": "Find the K-th smallest element in an N×N sorted matrix.",
+    "inputFormat": "N and K. N matrix rows.",
+    "outputFormat": "The K-th smallest element.",
+    "examples": [
+      { "input": "3 8\n1 5 9\n10 11 13\n12 13 15", "output": "13" }
+    ],
+    "hiddenTests": [
+      { "input": "3 1\n1 2 3\n4 5 6\n7 8 9", "output": "1" },
+      { "input": "2 3\n1 3\n2 4", "output": "3" },
+      { "input": "1 1\n100", "output": "100" },
+      { "input": "3 9\n1 1 1\n1 1 1\n1 1 1", "output": "1" },
+      { "input": "2 4\n1 2\n3 4", "output": "4" }
+    ]
+  },
+  {
+    "category": "Two Pointers",
+    "categoryIcon": "👆",
+    "categoryColor": "#D35400",
+    "title": "Minimum Window Substring",
+    "difficulty": "ieee-master",
+    "description": "Minimum length contiguous substring of S containing all characters of T.",
+    "inputFormat": "S and T.",
+    "outputFormat": "The minimum window substring, or -1.",
+    "examples": [
+      { "input": "ADOBECODEBANC\nABC", "output": "BANC" }
+    ],
+    "hiddenTests": [
+      { "input": "a\na", "output": "a" },
+      { "input": "ab\nba", "output": "ab" },
+      { "input": "hello\nxyz", "output": "-1" },
+      { "input": "aaabbb\naab", "output": "aab" }
+    ]
+  }
+]

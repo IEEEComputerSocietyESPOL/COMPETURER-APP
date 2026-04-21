@@ -1,0 +1,22 @@
+[
+  { "name": "Team Alpha", "password": "pass123", "members": ["Juan", "María"] },
+  { "name": "Team Beta", "password": "pass456", "members": "Carlos, Ana" },
+  { "name": "Team Gamma", "password": "sec789", "members": ["Luis", "Sofía", "Pedro"] },
+  { "name": "Team Delta", "password": "delta2024", "members": "Elena, Roberto" },
+  { "name": "Team Epsilon", "password": "eps_99", "members": ["Lucía", "Marcos"] },
+  { "name": "Team Zeta", "password": "zeta_pass", "members": "Fernando, Claudia" },
+  { "name": "Team Eta", "password": "eta1122", "members": ["Raúl", "Mónica"] },
+  { "name": "Team Theta", "password": "tht_55", "members": "Gabriel, Patricia" },
+  { "name": "Team Iota", "password": "iota_33", "members": ["Andrés", "Valeria"] },
+  { "name": "Team Kappa", "password": "kap_77", "members": "Jorge, Isabel" },
+  { "name": "Team Lambda", "password": "lam_88", "members": ["Sonia", "Ricardo"] },
+  { "name": "Team Mu", "password": "mu_001", "members": "Tomás, Beatriz" },
+  { "name": "Team Nu", "password": "nu_pass1", "members": ["Felipe", "Daniela"] },
+  { "name": "Team Xi", "password": "xi_2026", "members": "Hugo, Natalia" },
+  { "name": "Team Omicron", "password": "omi_12", "members": ["Óscar", "Julia"] },
+  { "name": "Team Pi", "password": "pi_314", "members": "Mateo, Lorena" },
+  { "name": "Team Rho", "password": "rho_90", "members": ["Esteban", "Rosa"] },
+  { "name": "Team Sigma", "password": "sig_44", "members": "Adrián, Silvia" },
+  { "name": "Team Tau", "password": "tau_22", "members": ["Víctor", "Inés"] },
+  { "name": "Team Upsilon", "password": "ups_66", "members": "Ramiro, Clara" }
+]

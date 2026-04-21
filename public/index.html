@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>IEEE Hackathon Platform</title>
+
+  <link rel="shortcut icon" href="resources/CS-compactos-blanco-con-naranja-competurer.ico" type="image/x-icon">
+  <link rel="stylesheet" href="css/main.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.44.0/min/vs/loader.min.js"></script>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════
+     LOGIN SCREEN
+════════════════════════════════════ -->
+<div id="login-screen">
+  <div class="login-logo-area">
+    <div class="login-glow-ring" id="login-logo-ring">
+      <span id="login-logo-emoji">⚡</span>
+    </div>
+    <h1 class="login-title glitch" data-text="HACKATHON">HACKATHON</h1>
+    <p class="login-sub" id="login-platform-name">Competition Platform</p>
+  </div>
+  <div class="login-box">
+    <div class="form-group">
+      <label class="form-label">Nombre del Equipo</label>
+      <input id="login-team-user" type="text" class="form-input" placeholder="Ej: Team Alpha" autocomplete="off" />
+    </div>
+    <div class="form-group">
+      <label class="form-label">Contraseña del Equipo</label>
+      <input id="login-team-password" type="password" class="form-input" placeholder="*******" autocomplete="off" />
+    </div>
+    <button class="btn btn-primary" style="width:100%; justify-content:center; margin-top:8px;" onclick="doLogin()">INGRESAR A LA COMPETENCIA</button>
+    <p style="margin-top:14px; font-size:0.72rem; color:var(--text-muted); text-align:center;">
+      El nombre de equipo debe estar registrado por el administrador
+    </p>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════
+     COMPETITION ENDED OVERLAY
+════════════════════════════════════ -->
+<div id="ended-overlay">
+  <div class="ended-icon">🏁</div>
+  <h2 style="font-family:var(--font-display); color:var(--cyan); font-size:1.8rem; letter-spacing:0.1em;">COMPETENCIA FINALIZADA</h2>
+  <p style="color:var(--text-secondary); font-size:1rem;">El tiempo ha terminado. ¡Gracias por participar!</p>
+  <button class="btn btn-primary" onclick="showRankingFromEnded()">VER RANKING FINAL 🏆</button>
+</div>
+
+<!-- Boton hamburguesa (fuera del #app, siempre en DOM) -->
+<button id="mobile-menu-btn" onclick="toggleMobileMenu()" aria-label="Menu" style="display:none;">
+  <span></span><span></span><span></span>
+</button>
+
+<!-- Overlay oscuro para cerrar sidebar al tocar fuera -->
+<div id="sidebar-overlay" onclick="closeMobileMenu()"></div>
+
+<!-- ═══════════════════════════════════
+     SIDEBAR (fuera del #app para que position:fixed funcione siempre)
+════════════════════════════════════ -->
+<aside id="sidebar" style="display:none;">
+  <div class="sidebar-logo">
+    <div class="sidebar-logo-img" id="sb-logo-img">&#9889;</div>
+    <div class="sidebar-logo-text sidebar-text" id="sb-logo-text">IEEE HACKATHON</div>
+  </div>
+  <div class="sidebar-team" id="sb-team-info" style="display:none;">
+    <div class="sidebar-team-name sidebar-text" id="sb-team-name">EQUIPO</div>
+    <div class="sidebar-team-score sidebar-text"><span id="sb-team-score">0</span> <span style="font-size:0.7rem; color:var(--text-muted);">pts</span></div>
+    <div style="margin-top:6px;" class="sidebar-text">
+      <div class="progress-bar"><div class="progress-fill" id="sb-progress" style="width:0%"></div></div>
+    </div>
+  </div>
+  <!-- Filtro por dificultad -->
+  <div class="sidebar-filter sidebar-text" id="sidebar-filter">
+    <span class="filter-label">Filtrar:</span>
+    <div class="filter-pills">
+      <button class="filter-pill active" data-diff="" onclick="setDifficultyFilter(null)">Todos</button>
+      <button class="filter-pill" data-diff="basic" onclick="setDifficultyFilter('basic')" title="Básico">⭐</button>
+      <button class="filter-pill" data-diff="medium" onclick="setDifficultyFilter('medium')" title="Medio">⭐⭐</button>
+      <button class="filter-pill" data-diff="hard" onclick="setDifficultyFilter('hard')" title="Difícil">⭐⭐⭐</button>
+      <button class="filter-pill" data-diff="ieee-master" onclick="setDifficultyFilter('ieee-master')" title="IEEE Master">👑</button>
+    </div>
+  </div>
+  <nav class="sidebar-nav" id="sidebar-nav"></nav>
+  <div class="sidebar-bottom">
+    <button class="sidebar-btn" onclick="showPage('ranking')">
+      <span class="btn-icon">&#127942;</span>
+      <span class="sidebar-text">Ranking</span>
+    </button>
+    <button class="sidebar-btn" onclick="showPage('dashboard')">
+      <span class="btn-icon">&#128202;</span>
+      <span class="sidebar-text">Dashboard</span>
+    </button>
+    <button class="sidebar-btn" onclick="doLogout()" style="color:var(--red);">
+      <span class="btn-icon">&#9167;</span>
+      <span class="sidebar-text">Salir</span>
+    </button>
+  </div>
+</aside>
+
+<!-- ═══════════════════════════════════
+     MAIN APP
+════════════════════════════════════ -->
+<div id="app" style="display:none;">
+  <main id="main">
+    <header id="header">
+      <span class="header-title" id="header-subtitle">ORGANIZADO POR IEEE COMPUTER SOCIETY ESPOL</span>
+      <div class="header-spacer"></div>
+      <div id="global-timer" style="display:none;">
+        <div class="timer-dot"></div>
+        <span id="timer-display">00:00:00</span>
+      </div>
+    </header>
+
+    <div id="content">
+
+      <div class="page" id="page-dashboard">
+        <div class="section-header">
+          <h2 class="section-title">DASHBOARD</h2>
+          <div class="section-line"></div>
+        </div>
+        <div class="dashboard-grid" id="dash-stats"></div>
+        <div class="card">
+          <div class="section-header" style="margin-bottom:16px;">
+            <h3 class="section-title" style="font-size:0.8rem;">CATEGORIAS DE DESAFIOS</h3>
+            <div class="section-line"></div>
+          </div>
+          <div id="dash-categories" style="display:grid; grid-template-columns: repeat(auto-fill, minmax(220px,1fr)); gap:14px;"></div>
+        </div>
+      </div>
+
+      <div class="page" id="page-challenge">
+        <div id="challenge-content"></div>
+      </div>
+
+      <div class="page" id="page-ranking">
+        <div class="section-header">
+          <h2 class="section-title">&#127942; RANKING</h2>
+          <div class="section-line"></div>
+        </div>
+        <div class="card card-glow">
+          <div id="ranking-content"></div>
+        </div>
+      </div>
+
+    </div><!-- /content -->
+  </main>
+</div>
+
+<div id="toast-container"></div>
+
+<script src="js/user.js"></script>
+<script src="js/runner.js"></script>
+<script src="js/store.js"></script>
+
+</body>
+</html>
