@@ -23,14 +23,14 @@ async function authFetch(url, options = {}) {
 async function adminLogin() {
   const u = document.getElementById('au').value.trim();
   const p = document.getElementById('ap').value;
-  
+
   try {
     const res = await fetch('/api/auth/admin-login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ username: u, password: p })
     });
-    
+
     if (res.ok) {
       const data = await res.json();
       adminToken  = data.token;
@@ -98,7 +98,7 @@ async function loadAdminData() {
   if (cfg.endTime) {
     const d = new Date(cfg.endTime);
     const local = new Date(d.getTime() - d.getTimezoneOffset() * 60000)
-      .toISOString().slice(0, 16);
+    .toISOString().slice(0, 16);
     document.getElementById('cfg-endtime').value = local;
   }
 
@@ -188,27 +188,27 @@ async function renderAdminsTable() {
   }
 
   const rows = admins.map(a => `
-    <tr>
-      <td class="check-col"><input type="checkbox" class="bulk-cb" data-id="${a.id}" onchange="updateBulkBar('admins-table-wrap')" /></td>
-      <td style="color:var(--text-primary); font-weight:600;">👤 ${escHtml(a.username)}</td>
-      <td style="color:var(--text-muted); font-size:0.78rem;">ID: ${a.id.substring(0, 8)}...</td>
-      <td>
-        <div class="inline-btns">
-          <button class="mini-btn" onclick="openAdminModal('${a.id}')">✏ Editar</button>
-          <button class="mini-btn danger" onclick="deleteAdmin('${a.id}','${escHtml(a.username)}')">🗑</button>
-        </div>
-      </td>
-    </tr>`).join('');
+  <tr>
+  <td class="check-col"><input type="checkbox" class="bulk-cb" data-id="${a.id}" onchange="updateBulkBar('admins-table-wrap')" /></td>
+  <td style="color:var(--text-primary); font-weight:600;">👤 ${escHtml(a.username)}</td>
+  <td style="color:var(--text-muted); font-size:0.78rem;">ID: ${a.id.substring(0, 8)}...</td>
+  <td>
+  <div class="inline-btns">
+  <button class="mini-btn" onclick="openAdminModal('${a.id}')">✏ Editar</button>
+  <button class="mini-btn danger" onclick="deleteAdmin('${a.id}','${escHtml(a.username)}')">🗑</button>
+  </div>
+  </td>
+  </tr>`).join('');
 
   wrap.innerHTML = `
-    <table class="admin-table">
-      <thead><tr>
-        <th class="check-col"><input type="checkbox" class="bulk-cb-all" onchange="toggleAllCheckboxes('admins-table-wrap', this.checked)" /></th>
-        <th>Usuario</th><th>ID</th><th>Acciones</th>
-      </tr></thead>
-      <tbody>${rows}</tbody>
-    </table>
-    ${bulkBarHtml('admins-table-wrap', 'admins')}`;
+  <table class="admin-table">
+  <thead><tr>
+  <th class="check-col"><input type="checkbox" class="bulk-cb-all" onchange="toggleAllCheckboxes('admins-table-wrap', this.checked)" /></th>
+  <th>Usuario</th><th>ID</th><th>Acciones</th>
+  </tr></thead>
+  <tbody>${rows}</tbody>
+  </table>
+  ${bulkBarHtml('admins-table-wrap', 'admins')}`;
 }
 
 async function openAdminModal(adminId = null) {
@@ -220,20 +220,20 @@ async function openAdminModal(adminId = null) {
   }
 
   showModal(`
-    <div class="modal-title">${admin ? '✏ Editar Admin' : '+ Nuevo Admin'}</div>
-    <div class="form-group">
-      <label class="form-label">Usuario *</label>
-      <input id="m-admin-user" type="text" class="form-input" value="${escHtml(admin?.username || '')}" placeholder="admin2" ${admin ? 'disabled' : ''} />
-      <small style="color:var(--text-muted); font-size:0.7rem;">No se puede cambiar después de crear</small>
-    </div>
-    <div class="form-group">
-      <label class="form-label">Contraseña ${admin ? '(dejar vacío para mantener)' : '*'}</label>
-      <input id="m-admin-pass" type="password" class="form-input" placeholder="••••••••" />
-    </div>
-    <div style="display:flex; gap:10px; justify-content:flex-end; margin-top:20px;">
-      <button class="btn btn-ghost" onclick="closeModal()">Cancelar</button>
-      <button class="btn btn-primary" onclick="saveAdmin('${adminId || ''}')">💾 Guardar</button>
-    </div>`);
+  <div class="modal-title">${admin ? '✏ Editar Admin' : '+ Nuevo Admin'}</div>
+  <div class="form-group">
+  <label class="form-label">Usuario *</label>
+  <input id="m-admin-user" type="text" class="form-input" value="${escHtml(admin?.username || '')}" placeholder="admin2" ${admin ? 'disabled' : ''} />
+  <small style="color:var(--text-muted); font-size:0.7rem;">No se puede cambiar después de crear</small>
+  </div>
+  <div class="form-group">
+  <label class="form-label">Contraseña ${admin ? '(dejar vacío para mantener)' : '*'}</label>
+  <input id="m-admin-pass" type="password" class="form-input" placeholder="••••••••" />
+  </div>
+  <div style="display:flex; gap:10px; justify-content:flex-end; margin-top:20px;">
+  <button class="btn btn-ghost" onclick="closeModal()">Cancelar</button>
+  <button class="btn btn-primary" onclick="saveAdmin('${adminId || ''}')">💾 Guardar</button>
+  </div>`);
 }
 
 async function saveAdmin(adminId) {
@@ -307,30 +307,30 @@ async function renderTeamsTable() {
   }
 
   const rows = teams.map(t => `
-    <tr>
-      <td class="check-col"><input type="checkbox" class="bulk-cb" data-id="${t.id}" onchange="updateBulkBar('teams-table-wrap')" /></td>
-      <td style="color:var(--text-primary); font-weight:600;">${escHtml(t.name)}</td>
-      <td style="color:var(--text-muted); font-size:0.78rem;">${(t.members || []).join(', ') || '—'}</td>
-      <td><span style="color:var(--cyan); font-family:var(--font-display); font-weight:700;">${t.score ?? 0}</span></td>
-      <td>${t.completedChallenges?.length || 0} completados</td>
-      <td>
-        <div class="inline-btns">
-          <button class="mini-btn" onclick="openTeamModal('${t.id}')">✏ Editar</button>
-          <button class="mini-btn danger" onclick="deleteTeam('${t.id}','${escHtml(t.name)}')">🗑</button>
-          <button class="mini-btn" onclick="resetTeamProgress('${t.id}')">↺ Reset</button>
-        </div>
-      </td>
-    </tr>`).join('');
+  <tr>
+  <td class="check-col"><input type="checkbox" class="bulk-cb" data-id="${t.id}" onchange="updateBulkBar('teams-table-wrap')" /></td>
+  <td style="color:var(--text-primary); font-weight:600;">${escHtml(t.name)}</td>
+  <td style="color:var(--text-muted); font-size:0.78rem;">${(t.members || []).join(', ') || '—'}</td>
+  <td><span style="color:var(--cyan); font-family:var(--font-display); font-weight:700;">${t.score ?? 0}</span></td>
+  <td>${t.completedChallenges?.length || 0} completados</td>
+  <td>
+  <div class="inline-btns">
+  <button class="mini-btn" onclick="openTeamModal('${t.id}')">✏ Editar</button>
+  <button class="mini-btn danger" onclick="deleteTeam('${t.id}','${escHtml(t.name)}')">🗑</button>
+  <button class="mini-btn" onclick="resetTeamProgress('${t.id}')">↺ Reset</button>
+  </div>
+  </td>
+  </tr>`).join('');
 
   wrap.innerHTML = `
-    <table class="admin-table">
-      <thead><tr>
-        <th class="check-col"><input type="checkbox" class="bulk-cb-all" onchange="toggleAllCheckboxes('teams-table-wrap', this.checked)" /></th>
-        <th>Nombre</th><th>Integrantes</th><th>Puntaje</th><th>Progreso</th><th>Acciones</th>
-      </tr></thead>
-      <tbody>${rows}</tbody>
-    </table>
-    ${bulkBarHtml('teams-table-wrap', 'teams')}`;
+  <table class="admin-table">
+  <thead><tr>
+  <th class="check-col"><input type="checkbox" class="bulk-cb-all" onchange="toggleAllCheckboxes('teams-table-wrap', this.checked)" /></th>
+  <th>Nombre</th><th>Integrantes</th><th>Puntaje</th><th>Progreso</th><th>Acciones</th>
+  </tr></thead>
+  <tbody>${rows}</tbody>
+  </table>
+  ${bulkBarHtml('teams-table-wrap', 'teams')}`;
 }
 
 async function openTeamModal(teamId = null) {
@@ -338,24 +338,24 @@ async function openTeamModal(teamId = null) {
   const team  = teamId ? teams.find(t => t.id === teamId) : null;
 
   showModal(`
-    <div class="modal-title">${team ? '✏ Editar Equipo' : '+ Nuevo Equipo'}</div>
-    <div class="form-group">
-      <label class="form-label">Nombre del Equipo *</label>
-      <input id="m-team-name" type="text" class="form-input" value="${escHtml(team?.name || '')}" placeholder="Team Alpha" />
-    </div>
-    <div class="form-group">
-      <label class="form-label">Contraseña del Equipo *</label>
-      <input id="m-team-password" type="password" class="form-input" value="${escHtml(team?.password || '')}" placeholder="Contraseña segura" />
-      <small style="color:var(--text-muted); font-size:0.7rem;">Los miembros usarán esta contraseña para entrar</small>
-    </div>
-    <div class="form-group">
-      <label class="form-label">Integrantes (separados por coma)</label>
-      <input id="m-team-members" type="text" class="form-input" value="${escHtml((team?.members || []).join(', '))}" placeholder="Juan, María, Carlos" />
-    </div>
-    <div style="display:flex; gap:10px; justify-content:flex-end; margin-top:20px;">
-      <button class="btn btn-ghost" onclick="closeModal()">Cancelar</button>
-      <button class="btn btn-primary" onclick="saveTeam('${teamId || ''}')">💾 Guardar</button>
-    </div>`);
+  <div class="modal-title">${team ? '✏ Editar Equipo' : '+ Nuevo Equipo'}</div>
+  <div class="form-group">
+  <label class="form-label">Nombre del Equipo *</label>
+  <input id="m-team-name" type="text" class="form-input" value="${escHtml(team?.name || '')}" placeholder="Team Alpha" />
+  </div>
+  <div class="form-group">
+  <label class="form-label">Contraseña del Equipo *</label>
+  <input id="m-team-password" type="password" class="form-input" value="${escHtml(team?.password || '')}" placeholder="Contraseña segura" />
+  <small style="color:var(--text-muted); font-size:0.7rem;">Los miembros usarán esta contraseña para entrar</small>
+  </div>
+  <div class="form-group">
+  <label class="form-label">Integrantes (separados por coma)</label>
+  <input id="m-team-members" type="text" class="form-input" value="${escHtml((team?.members || []).join(', '))}" placeholder="Juan, María, Carlos" />
+  </div>
+  <div style="display:flex; gap:10px; justify-content:flex-end; margin-top:20px;">
+  <button class="btn btn-ghost" onclick="closeModal()">Cancelar</button>
+  <button class="btn btn-primary" onclick="saveTeam('${teamId || ''}')">💾 Guardar</button>
+  </div>`);
 }
 
 async function saveTeam(teamId) {
@@ -365,13 +365,13 @@ async function saveTeam(teamId) {
   if (!password) { showToast('La contraseña es requerida', 'error'); return; }
 
   const members = document.getElementById('m-team-members').value
-    .split(',').map(s => s.trim()).filter(Boolean);
+  .split(',').map(s => s.trim()).filter(Boolean);
 
   const teams    = await Store.getTeams();
   const existing = teamId ? teams.find(t => t.id === teamId) : null;
   const team = existing
-    ? { ...existing, name, password, members }
-    : { id: genId(), name, password, members, score: 0, completedChallenges: [] };
+  ? { ...existing, name, password, members }
+  : { id: genId(), name, password, members, score: 0, completedChallenges: [] };
 
   await Store.saveTeam(team);
   closeModal();
@@ -398,8 +398,102 @@ async function resetTeamProgress(id) {
   showToast('Progreso reseteado', 'info');
 }
 
+// ── IMPORTAR EQUIPOS DESDE JSON ───────────────────────────
+/*
+ * Formato esperado:
+ * [
+ *   { "name": "Team Alpha", "password": "pass123", "members": ["Juan", "María"] },
+ *   { "name": "Team Beta",  "password": "pass456", "members": "Carlos, Ana" },
+ *   ...
+ * ]
+ * - "members" puede ser array o string separado por comas.
+ */
+async function importTeamsJSON(input) {
+  const file = input.files[0];
+  input.value = ''; // reset para permitir reimportar el mismo archivo
+  if (!file) return;
+
+  let raw;
+  try {
+    raw = await file.text();
+  } catch (e) {
+    showToast('❌ No se pudo leer el archivo', 'error');
+    return;
+  }
+
+  let items;
+  try {
+    items = JSON.parse(raw);
+  } catch (e) {
+    showToast('❌ JSON inválido: ' + e.message, 'error');
+    return;
+  }
+
+  if (!Array.isArray(items)) {
+    showToast('❌ El JSON debe ser un array de equipos [ {...}, {...} ]', 'error');
+    return;
+  }
+
+  if (items.length === 0) {
+    showToast('⚠ El JSON está vacío', 'info');
+    return;
+  }
+
+  const existingTeams = await Store.getTeams();
+  const existingNames = new Set(existingTeams.map(t => t.name.toLowerCase()));
+
+  const errors   = [];
+  const imported = [];
+
+  for (let i = 0; i < items.length; i++) {
+    const item  = items[i];
+    const label = `#${i + 1}${item.name ? ' "' + item.name + '"' : ''}`;
+
+    if (!item.name || typeof item.name !== 'string' || !item.name.trim()) {
+      errors.push({ label, reason: 'Falta el campo "name"' });
+      continue;
+    }
+    if (!item.password || typeof item.password !== 'string' || !item.password.trim()) {
+      errors.push({ label, reason: 'Falta el campo "password"' });
+      continue;
+    }
+    if (existingNames.has(item.name.trim().toLowerCase())) {
+      errors.push({ label, reason: `Ya existe un equipo con el nombre "${item.name.trim()}"` });
+      continue;
+    }
+
+    // Normalizar members: acepta array o string separado por comas
+    let members = [];
+    if (Array.isArray(item.members)) {
+      members = item.members.map(m => String(m).trim()).filter(Boolean);
+    } else if (typeof item.members === 'string' && item.members.trim()) {
+      members = item.members.split(',').map(m => m.trim()).filter(Boolean);
+    }
+
+    const team = {
+      id:                  genId(),
+      name:                item.name.trim(),
+      password:            item.password.trim(),
+      members,
+      score:               0,
+      completedChallenges: []
+    };
+
+    try {
+      await Store.saveTeam(team);
+      existingNames.add(team.name.toLowerCase());
+      imported.push(team.name);
+    } catch (e) {
+      errors.push({ label, reason: `Error al guardar: ${e.message}` });
+    }
+  }
+
+  renderTeamsTable();
+  showImportReport(items.length, imported, errors);
+}
+
 // ── CATEGORIES ────────────────────────────────────────────
-const CAT_COLORS = ['#00f5ff','#ff6b35','#ffd700','#00ff87','#c084fc','#ff00aa','#60a5fa','#f472b6'];
+const CAT_COLORS = ['#00f5ff','#fb923c','#ffd700','#00ff87','#c084fc','#ff00aa','#60a5fa','#f472b6'];
 const CAT_ICONS  = ['⚡','🔷','🏆','🎯','🔥','💡','🚀','🔐','📐','🌐','🧬','🤖'];
 
 async function renderCatsTable() {
@@ -412,28 +506,28 @@ async function renderCatsTable() {
   }
 
   const rows = cats.map(c => `
-    <tr>
-      <td class="check-col"><input type="checkbox" class="bulk-cb" data-id="${c.id}" onchange="updateBulkBar('cats-table-wrap')" /></td>
-      <td><span style="font-size:20px;">${c.icon || '📁'}</span></td>
-      <td><span style="color:${c.color}; font-weight:600;">${escHtml(c.name)}</span></td>
-      <td>${(c.challenges || []).length} desafíos</td>
-      <td>
-        <div class="inline-btns">
-          <button class="mini-btn" onclick="openCatModal('${c.id}')">✏ Editar</button>
-          <button class="mini-btn danger" onclick="deleteCat('${c.id}','${escHtml(c.name)}')">🗑</button>
-        </div>
-      </td>
-    </tr>`).join('');
+  <tr>
+  <td class="check-col"><input type="checkbox" class="bulk-cb" data-id="${c.id}" onchange="updateBulkBar('cats-table-wrap')" /></td>
+  <td><span style="font-size:20px;">${c.icon || '📁'}</span></td>
+  <td><span style="color:${c.color}; font-weight:600;">${escHtml(c.name)}</span></td>
+  <td>${(c.challenges || []).length} desafíos</td>
+  <td>
+  <div class="inline-btns">
+  <button class="mini-btn" onclick="openCatModal('${c.id}')">✏ Editar</button>
+  <button class="mini-btn danger" onclick="deleteCat('${c.id}','${escHtml(c.name)}')">🗑</button>
+  </div>
+  </td>
+  </tr>`).join('');
 
   wrap.innerHTML = `
-    <table class="admin-table">
-      <thead><tr>
-        <th class="check-col"><input type="checkbox" class="bulk-cb-all" onchange="toggleAllCheckboxes('cats-table-wrap', this.checked)" /></th>
-        <th>Icono</th><th>Nombre</th><th>Desafíos</th><th>Acciones</th>
-      </tr></thead>
-      <tbody>${rows}</tbody>
-    </table>
-    ${bulkBarHtml('cats-table-wrap', 'categories')}`;
+  <table class="admin-table">
+  <thead><tr>
+  <th class="check-col"><input type="checkbox" class="bulk-cb-all" onchange="toggleAllCheckboxes('cats-table-wrap', this.checked)" /></th>
+  <th>Icono</th><th>Nombre</th><th>Desafíos</th><th>Acciones</th>
+  </tr></thead>
+  <tbody>${rows}</tbody>
+  </table>
+  ${bulkBarHtml('cats-table-wrap', 'categories')}`;
 }
 
 async function openCatModal(catId = null) {
@@ -441,33 +535,33 @@ async function openCatModal(catId = null) {
   const cat  = catId ? cats.find(c => c.id === catId) : null;
 
   const colorOpts = CAT_COLORS.map(c =>
-    `<div class="color-opt ${cat?.color === c ? 'selected' : ''}" style="background:${c};" onclick="selectCatColor(this,'${c}')" data-color="${c}"></div>`
+  `<div class="color-opt ${cat?.color === c ? 'selected' : ''}" style="background:${c};" onclick="selectCatColor(this,'${c}')" data-color="${c}"></div>`
   ).join('');
 
   const iconOpts = CAT_ICONS.map(ic =>
-    `<div class="color-opt ${cat?.icon === ic ? 'selected' : ''}" style="background:var(--bg-card2); font-size:16px; display:flex; align-items:center; justify-content:center;" onclick="selectCatIcon(this,'${ic}')" data-icon="${ic}">${ic}</div>`
+  `<div class="color-opt ${cat?.icon === ic ? 'selected' : ''}" style="background:var(--bg-card2); font-size:16px; display:flex; align-items:center; justify-content:center;" onclick="selectCatIcon(this,'${ic}')" data-icon="${ic}">${ic}</div>`
   ).join('');
 
   showModal(`
-    <div class="modal-title">${cat ? '✏ Editar Categoría' : '+ Nueva Categoría'}</div>
-    <div class="form-group">
-      <label class="form-label">Nombre *</label>
-      <input id="m-cat-name" type="text" class="form-input" value="${escHtml(cat?.name || '')}" placeholder="Algoritmia" />
-    </div>
-    <div class="form-group">
-      <label class="form-label">Color</label>
-      <input type="hidden" id="m-cat-color" value="${cat?.color || CAT_COLORS[0]}" />
-      <div class="color-grid">${colorOpts}</div>
-    </div>
-    <div class="form-group">
-      <label class="form-label">Icono</label>
-      <input type="hidden" id="m-cat-icon" value="${cat?.icon || CAT_ICONS[0]}" />
-      <div class="color-grid">${iconOpts}</div>
-    </div>
-    <div style="display:flex; gap:10px; justify-content:flex-end; margin-top:20px;">
-      <button class="btn btn-ghost" onclick="closeModal()">Cancelar</button>
-      <button class="btn btn-primary" onclick="saveCat('${catId || ''}')">💾 Guardar</button>
-    </div>`);
+  <div class="modal-title">${cat ? '✏ Editar Categoría' : '+ Nueva Categoría'}</div>
+  <div class="form-group">
+  <label class="form-label">Nombre *</label>
+  <input id="m-cat-name" type="text" class="form-input" value="${escHtml(cat?.name || '')}" placeholder="Algoritmia" />
+  </div>
+  <div class="form-group">
+  <label class="form-label">Color</label>
+  <input type="hidden" id="m-cat-color" value="${cat?.color || CAT_COLORS[0]}" />
+  <div class="color-grid">${colorOpts}</div>
+  </div>
+  <div class="form-group">
+  <label class="form-label">Icono</label>
+  <input type="hidden" id="m-cat-icon" value="${cat?.icon || CAT_ICONS[0]}" />
+  <div class="color-grid">${iconOpts}</div>
+  </div>
+  <div style="display:flex; gap:10px; justify-content:flex-end; margin-top:20px;">
+  <button class="btn btn-ghost" onclick="closeModal()">Cancelar</button>
+  <button class="btn btn-primary" onclick="saveCat('${catId || ''}')">💾 Guardar</button>
+  </div>`);
 }
 
 function selectCatColor(el, color) {
@@ -491,8 +585,8 @@ async function saveCat(catId) {
   const cats  = await Store.getCategories();
   const existing = catId ? cats.find(c => c.id === catId) : null;
   const cat = existing
-    ? { ...existing, name, color, icon }
-    : { id: genId(), name, color, icon, challenges: [] };
+  ? { ...existing, name, color, icon }
+  : { id: genId(), name, color, icon, challenges: [] };
 
   await Store.saveCategory(cat);
   closeModal();
@@ -515,7 +609,7 @@ async function populateCatFilter() {
   const cats   = await Store.getCategories();
   const current = select.value;
   select.innerHTML = '<option value="">Todas las categorías</option>' +
-    cats.map(c => `<option value="${c.id}" ${current === c.id ? 'selected' : ''}>${c.icon} ${c.name}</option>`).join('');
+  cats.map(c => `<option value="${c.id}" ${current === c.id ? 'selected' : ''}>${c.icon} ${c.name}</option>`).join('');
 }
 
 async function renderChallengesTable() {
@@ -529,20 +623,20 @@ async function renderChallengesTable() {
     (cat.challenges || []).forEach(ch => {
       const diff = DIFFICULTY[ch.difficulty] || DIFFICULTY.basic;
       rows.push(`
-        <tr>
-          <td class="check-col"><input type="checkbox" class="bulk-cb" data-id="${cat.id}::${ch.id}" onchange="updateBulkBar('challenges-table-wrap')" /></td>
-          <td><span class="cat-badge" style="color:${cat.color}; border-color:${cat.color}40;">${cat.icon} ${escHtml(cat.name)}</span></td>
-          <td style="color:var(--text-primary); font-weight:600;">${escHtml(ch.title)}</td>
-          <td><span class="diff-badge" style="color:${diff.color}; border-color:${diff.color}; background:${diff.color}18;">${diff.label}</span></td>
-          <td style="color:var(--cyan);">${diff.points} pts</td>
-          <td>${(ch.hiddenTests || []).length} tests ocultos</td>
-          <td>
-            <div class="inline-btns">
-              <button class="mini-btn" onclick="openChallengeModal('${cat.id}','${ch.id}')">✏ Editar</button>
-              <button class="mini-btn danger" onclick="deleteChallenge('${cat.id}','${ch.id}','${escHtml(ch.title)}')">🗑</button>
-            </div>
-          </td>
-        </tr>`);
+      <tr>
+      <td class="check-col"><input type="checkbox" class="bulk-cb" data-id="${cat.id}::${ch.id}" onchange="updateBulkBar('challenges-table-wrap')" /></td>
+      <td><span class="cat-badge" style="color:${cat.color}; border-color:${cat.color}40;">${cat.icon} ${escHtml(cat.name)}</span></td>
+      <td style="color:var(--text-primary); font-weight:600;">${escHtml(ch.title)}</td>
+      <td><span class="diff-badge" style="color:${diff.color}; border-color:${diff.color}; background:${diff.color}18;">${diff.label}</span></td>
+      <td style="color:var(--cyan);">${diff.points} pts</td>
+      <td>${(ch.hiddenTests || []).length} tests ocultos</td>
+      <td>
+      <div class="inline-btns">
+      <button class="mini-btn" onclick="openChallengeModal('${cat.id}','${ch.id}')">✏ Editar</button>
+      <button class="mini-btn danger" onclick="deleteChallenge('${cat.id}','${ch.id}','${escHtml(ch.title)}')">🗑</button>
+      </div>
+      </td>
+      </tr>`);
     });
   });
 
@@ -552,14 +646,14 @@ async function renderChallengesTable() {
   }
 
   wrap.innerHTML = `
-    <table class="admin-table">
-      <thead><tr>
-        <th class="check-col"><input type="checkbox" class="bulk-cb-all" onchange="toggleAllCheckboxes('challenges-table-wrap', this.checked)" /></th>
-        <th>Categoría</th><th>Título</th><th>Dificultad</th><th>Puntos</th><th>Tests</th><th>Acciones</th>
-      </tr></thead>
-      <tbody>${rows.join('')}</tbody>
-    </table>
-    ${bulkBarHtml('challenges-table-wrap', 'challenges')}`;
+  <table class="admin-table">
+  <thead><tr>
+  <th class="check-col"><input type="checkbox" class="bulk-cb-all" onchange="toggleAllCheckboxes('challenges-table-wrap', this.checked)" /></th>
+  <th>Categoría</th><th>Título</th><th>Dificultad</th><th>Puntos</th><th>Tests</th><th>Acciones</th>
+  </tr></thead>
+  <tbody>${rows.join('')}</tbody>
+  </table>
+  ${bulkBarHtml('challenges-table-wrap', 'challenges')}`;
 }
 
 async function openChallengeModal(catId = null, challengeId = null) {
@@ -567,82 +661,82 @@ async function openChallengeModal(catId = null, challengeId = null) {
   if (!cats.length) { showToast('Crea una categoría primero', 'error'); return; }
 
   const ch = catId && challengeId
-    ? cats.find(c => c.id === catId)?.challenges.find(ch => ch.id === challengeId)
-    : null;
+  ? cats.find(c => c.id === catId)?.challenges.find(ch => ch.id === challengeId)
+  : null;
 
   const existingCatId = catId || cats[0].id;
 
   const catOptions = cats.map(c =>
-    `<option value="${c.id}" ${c.id === existingCatId ? 'selected' : ''}>${c.icon} ${c.name}</option>`
+  `<option value="${c.id}" ${c.id === existingCatId ? 'selected' : ''}>${c.icon} ${c.name}</option>`
   ).join('');
 
   const exHtml = (ch?.examples || [{input:'',output:''},{input:'',output:''}]).map((ex, i) => `
-    <div class="ex-row" style="display:grid; grid-template-columns:1fr 1fr auto; gap:8px; margin-bottom:8px; align-items:start;">
-      <div>
-        <label class="form-label" style="font-size:0.6rem;">Input ${i+1}</label>
-        <textarea class="form-textarea ch-ex-in" style="min-height:60px;" placeholder="Entrada de ejemplo">${escHtml(ex.input)}</textarea>
-      </div>
-      <div>
-        <label class="form-label" style="font-size:0.6rem;">Output ${i+1}</label>
-        <textarea class="form-textarea ch-ex-out" style="min-height:60px;" placeholder="Salida esperada">${escHtml(ex.output)}</textarea>
-      </div>
-      <button type="button" style="background:none; border:none; color:var(--red); cursor:pointer; font-size:18px; padding:4px; margin-top:18px;" onclick="this.closest('.ex-row').remove()">×</button>
-    </div>`).join('');
+  <div class="ex-row" style="display:grid; grid-template-columns:1fr 1fr auto; gap:8px; margin-bottom:8px; align-items:start;">
+  <div>
+  <label class="form-label" style="font-size:0.6rem;">Input ${i+1}</label>
+  <textarea class="form-textarea ch-ex-in" style="min-height:60px;" placeholder="Entrada de ejemplo">${escHtml(ex.input)}</textarea>
+  </div>
+  <div>
+  <label class="form-label" style="font-size:0.6rem;">Output ${i+1}</label>
+  <textarea class="form-textarea ch-ex-out" style="min-height:60px;" placeholder="Salida esperada">${escHtml(ex.output)}</textarea>
+  </div>
+  <button type="button" style="background:none; border:none; color:var(--red); cursor:pointer; font-size:18px; padding:4px; margin-top:18px;" onclick="this.closest('.ex-row').remove()">×</button>
+  </div>`).join('');
 
   const hiddenHtml = (ch?.hiddenTests || Array(4).fill({input:'',output:''})).map((t, i) => `
-    <div class="test-row">
-      <textarea class="form-textarea ch-hidden-in" style="min-height:50px; font-size:0.75rem;" placeholder="Input ${i+1}">${escHtml(t.input)}</textarea>
-      <textarea class="form-textarea ch-hidden-out" style="min-height:50px; font-size:0.75rem;" placeholder="Output ${i+1}">${escHtml(t.output)}</textarea>
-      <button type="button" style="background:none; border:none; color:var(--red); cursor:pointer; font-size:18px; padding:4px;" onclick="this.closest('.test-row').remove()">×</button>
-    </div>`).join('');
+  <div class="test-row">
+  <textarea class="form-textarea ch-hidden-in" style="min-height:50px; font-size:0.75rem;" placeholder="Input ${i+1}">${escHtml(t.input)}</textarea>
+  <textarea class="form-textarea ch-hidden-out" style="min-height:50px; font-size:0.75rem;" placeholder="Output ${i+1}">${escHtml(t.output)}</textarea>
+  <button type="button" style="background:none; border:none; color:var(--red); cursor:pointer; font-size:18px; padding:4px;" onclick="this.closest('.test-row').remove()">×</button>
+  </div>`).join('');
 
   showModal(`
-    <div class="modal-title">${ch ? '✏ Editar Desafío' : '+ Nuevo Desafío'}</div>
-    <div class="form-group">
-      <label class="form-label">Categoría *</label>
-      <select id="m-ch-cat" class="form-select">${catOptions}</select>
-    </div>
-    <div class="form-group">
-      <label class="form-label">Título *</label>
-      <input id="m-ch-title" type="text" class="form-input" value="${escHtml(ch?.title || '')}" placeholder="Suma de Arrays" />
-    </div>
-    <div class="form-group">
-      <label class="form-label">Dificultad *</label>
-      <select id="m-ch-diff" class="form-select diff-select">
-        <option value="basic" ${ch?.difficulty==='basic'?'selected':''}>⭐ Básico (1 pt)</option>
-        <option value="medium" ${ch?.difficulty==='medium'?'selected':''}>⭐⭐ Medio (2 pts)</option>
-        <option value="hard" ${ch?.difficulty==='hard'?'selected':''}>⭐⭐⭐ Difícil (3 pts)</option>
-        <option value="ieee-master" ${ch?.difficulty==='ieee-master'?'selected':''}>👑 IEEE Master (5 pts)</option>
-      </select>
-    </div>
-    <div class="form-group">
-      <label class="form-label">Descripción del Problema *</label>
-      <textarea id="m-ch-desc" class="form-textarea" style="min-height:100px;" placeholder="Describe el problema...">${escHtml(ch?.description || '')}</textarea>
-    </div>
-    <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
-      <div class="form-group">
-        <label class="form-label">Formato de Entrada</label>
-        <textarea id="m-ch-infmt" class="form-textarea" style="min-height:70px;">${escHtml(ch?.inputFormat || '')}</textarea>
-      </div>
-      <div class="form-group">
-        <label class="form-label">Formato de Salida</label>
-        <textarea id="m-ch-outfmt" class="form-textarea" style="min-height:70px;">${escHtml(ch?.outputFormat || '')}</textarea>
-      </div>
-    </div>
-    <div class="form-group">
-      <label class="form-label">Ejemplos Visibles (máx. 3)</label>
-      <div id="examples-wrap">${exHtml}</div>
-      <button type="button" class="mini-btn" style="margin-top:6px;" onclick="addExample()">+ Agregar ejemplo</button>
-    </div>
-    <div class="form-group">
-      <label class="form-label">Tests Ocultos (hasta 6) — No visibles para los participantes</label>
-      <div id="hidden-tests-wrap">${hiddenHtml}</div>
-      <button type="button" class="mini-btn" style="margin-top:6px;" onclick="addHiddenTest()">+ Agregar test oculto</button>
-    </div>
-    <div style="display:flex; gap:10px; justify-content:flex-end; margin-top:20px;">
-      <button class="btn btn-ghost" onclick="closeModal()">Cancelar</button>
-      <button class="btn btn-primary" onclick="saveChallenge('${existingCatId}','${challengeId || ''}')">💾 Guardar Desafío</button>
-    </div>`, true);
+  <div class="modal-title">${ch ? '✏ Editar Desafío' : '+ Nuevo Desafío'}</div>
+  <div class="form-group">
+  <label class="form-label">Categoría *</label>
+  <select id="m-ch-cat" class="form-select">${catOptions}</select>
+  </div>
+  <div class="form-group">
+  <label class="form-label">Título *</label>
+  <input id="m-ch-title" type="text" class="form-input" value="${escHtml(ch?.title || '')}" placeholder="Suma de Arrays" />
+  </div>
+  <div class="form-group">
+  <label class="form-label">Dificultad *</label>
+  <select id="m-ch-diff" class="form-select diff-select">
+  <option value="basic" ${ch?.difficulty==='basic'?'selected':''}>⭐ Básico (1 pt)</option>
+  <option value="medium" ${ch?.difficulty==='medium'?'selected':''}>⭐⭐ Medio (2 pts)</option>
+  <option value="hard" ${ch?.difficulty==='hard'?'selected':''}>⭐⭐⭐ Difícil (3 pts)</option>
+  <option value="ieee-master" ${ch?.difficulty==='ieee-master'?'selected':''}>👑 IEEE Master (5 pts)</option>
+  </select>
+  </div>
+  <div class="form-group">
+  <label class="form-label">Descripción del Problema *</label>
+  <textarea id="m-ch-desc" class="form-textarea" style="min-height:100px;" placeholder="Describe el problema...">${escHtml(ch?.description || '')}</textarea>
+  </div>
+  <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+  <div class="form-group">
+  <label class="form-label">Formato de Entrada</label>
+  <textarea id="m-ch-infmt" class="form-textarea" style="min-height:70px;">${escHtml(ch?.inputFormat || '')}</textarea>
+  </div>
+  <div class="form-group">
+  <label class="form-label">Formato de Salida</label>
+  <textarea id="m-ch-outfmt" class="form-textarea" style="min-height:70px;">${escHtml(ch?.outputFormat || '')}</textarea>
+  </div>
+  </div>
+  <div class="form-group">
+  <label class="form-label">Ejemplos Visibles (máx. 3)</label>
+  <div id="examples-wrap">${exHtml}</div>
+  <button type="button" class="mini-btn" style="margin-top:6px;" onclick="addExample()">+ Agregar ejemplo</button>
+  </div>
+  <div class="form-group">
+  <label class="form-label">Tests Ocultos (hasta 6) — No visibles para los participantes</label>
+  <div id="hidden-tests-wrap">${hiddenHtml}</div>
+  <button type="button" class="mini-btn" style="margin-top:6px;" onclick="addHiddenTest()">+ Agregar test oculto</button>
+  </div>
+  <div style="display:flex; gap:10px; justify-content:flex-end; margin-top:20px;">
+  <button class="btn btn-ghost" onclick="closeModal()">Cancelar</button>
+  <button class="btn btn-primary" onclick="saveChallenge('${existingCatId}','${challengeId || ''}')">💾 Guardar Desafío</button>
+  </div>`, true);
 }
 
 function addExample() {
@@ -653,15 +747,15 @@ function addExample() {
   div.className = 'ex-row';
   div.style.cssText = 'display:grid; grid-template-columns:1fr 1fr auto; gap:8px; margin-bottom:8px; align-items:start;';
   div.innerHTML = `
-    <div>
-      <label class="form-label" style="font-size:0.6rem;">Input ${i}</label>
-      <textarea class="form-textarea ch-ex-in" style="min-height:60px;" placeholder="Entrada de ejemplo"></textarea>
-    </div>
-    <div>
-      <label class="form-label" style="font-size:0.6rem;">Output ${i}</label>
-      <textarea class="form-textarea ch-ex-out" style="min-height:60px;" placeholder="Salida de ejemplo"></textarea>
-    </div>
-    <button type="button" style="background:none; border:none; color:var(--red); cursor:pointer; font-size:18px; padding:4px; margin-top:18px;" onclick="this.closest('.ex-row').remove()">×</button>`;
+  <div>
+  <label class="form-label" style="font-size:0.6rem;">Input ${i}</label>
+  <textarea class="form-textarea ch-ex-in" style="min-height:60px;" placeholder="Entrada de ejemplo"></textarea>
+  </div>
+  <div>
+  <label class="form-label" style="font-size:0.6rem;">Output ${i}</label>
+  <textarea class="form-textarea ch-ex-out" style="min-height:60px;" placeholder="Salida de ejemplo"></textarea>
+  </div>
+  <button type="button" style="background:none; border:none; color:var(--red); cursor:pointer; font-size:18px; padding:4px; margin-top:18px;" onclick="this.closest('.ex-row').remove()">×</button>`;
   wrap.appendChild(div);
 }
 
@@ -672,9 +766,9 @@ function addHiddenTest() {
   const div = document.createElement('div');
   div.className = 'test-row';
   div.innerHTML = `
-    <textarea class="form-textarea ch-hidden-in" style="min-height:50px; font-size:0.75rem;" placeholder="Input ${count + 1}"></textarea>
-    <textarea class="form-textarea ch-hidden-out" style="min-height:50px; font-size:0.75rem;" placeholder="Output ${count + 1}"></textarea>
-    <button type="button" style="background:none; border:none; color:var(--red); cursor:pointer; font-size:18px; padding:4px;" onclick="this.closest('.test-row').remove()">×</button>`;
+  <textarea class="form-textarea ch-hidden-in" style="min-height:50px; font-size:0.75rem;" placeholder="Input ${count + 1}"></textarea>
+  <textarea class="form-textarea ch-hidden-out" style="min-height:50px; font-size:0.75rem;" placeholder="Output ${count + 1}"></textarea>
+  <button type="button" style="background:none; border:none; color:var(--red); cursor:pointer; font-size:18px; padding:4px;" onclick="this.closest('.test-row').remove()">×</button>`;
   wrap.appendChild(div);
 }
 
@@ -733,26 +827,26 @@ async function renderAdminRanking() {
   const rows = teams.map((t, i) => {
     const icons = ['🥇','🥈','🥉'];
     return `
-      <tr>
-        <td><strong style="color:var(--gold);">${icons[i] || '#' + (i+1)}</strong></td>
-        <td style="color:var(--text-primary); font-weight:600;">${escHtml(t.name)}</td>
-        <td><span style="color:var(--cyan); font-family:var(--font-display); font-size:1.1rem;">${t.score ?? 0}</span></td>
-        <td>${t.completedChallenges?.length || 0} / ${totalCh}</td>
-        <td>${(t.members || []).join(', ') || '—'}</td>
-        <td>
-          <div class="inline-btns">
-            <button class="mini-btn" onclick="editTeamScore('${t.id}')">📋 Progreso</button>
-            <button class="mini-btn danger" onclick="resetTeamProgress('${t.id}')">↺</button>
-          </div>
-        </td>
-      </tr>`;
+    <tr>
+    <td><strong style="color:var(--gold);">${icons[i] || '#' + (i+1)}</strong></td>
+    <td style="color:var(--text-primary); font-weight:600;">${escHtml(t.name)}</td>
+    <td><span style="color:var(--cyan); font-family:var(--font-display); font-size:1.1rem;">${t.score ?? 0}</span></td>
+    <td>${t.completedChallenges?.length || 0} / ${totalCh}</td>
+    <td>${(t.members || []).join(', ') || '—'}</td>
+    <td>
+    <div class="inline-btns">
+    <button class="mini-btn" onclick="editTeamScore('${t.id}')">📋 Progreso</button>
+    <button class="mini-btn danger" onclick="resetTeamProgress('${t.id}')">↺</button>
+    </div>
+    </td>
+    </tr>`;
   }).join('');
 
   wrap.innerHTML = `
-    <table class="admin-table">
-      <thead><tr><th>#</th><th>Equipo</th><th>Puntos</th><th>Completados</th><th>Integrantes</th><th>Acciones</th></tr></thead>
-      <tbody>${rows}</tbody>
-    </table>`;
+  <table class="admin-table">
+  <thead><tr><th>#</th><th>Equipo</th><th>Puntos</th><th>Completados</th><th>Integrantes</th><th>Acciones</th></tr></thead>
+  <tbody>${rows}</tbody>
+  </table>`;
 }
 
 async function editTeamScore(teamId) {
@@ -782,7 +876,7 @@ async function editTeamScore(teamId) {
     let html = '';
     cats.forEach(cat => {
       const challenges = (cat.challenges || []).filter(ch =>
-        !diffFilter || ch.difficulty === diffFilter
+      !diffFilter || ch.difficulty === diffFilter
       );
       if (!challenges.length) return;
 
@@ -790,26 +884,26 @@ async function editTeamScore(teamId) {
         const diff   = DIFFICULTY[ch.difficulty] || DIFFICULTY.basic;
         const isDone = completed.has(ch.id);
         return `
-          <label class="prog-challenge-row ${isDone ? 'done' : ''}" data-ch-id="${ch.id}">
-            <input type="checkbox" class="prog-cb" data-ch-id="${ch.id}" data-pts="${diff.points}"
-              ${isDone ? 'checked' : ''} onchange="adminProgToggle(this)" />
-            <span class="prog-ch-title">${escHtml(ch.title)}</span>
-            <span class="diff-badge" style="color:${diff.color}; border-color:${diff.color}; background:${diff.color}18; font-size:0.65rem; padding:2px 8px;">${diff.icon} ${diff.label}</span>
-            <span class="prog-pts" style="color:var(--cyan); font-family:var(--font-display); font-size:0.78rem; white-space:nowrap;">+${diff.points} pts</span>
-          </label>`;
+        <label class="prog-challenge-row ${isDone ? 'done' : ''}" data-ch-id="${ch.id}">
+        <input type="checkbox" class="prog-cb" data-ch-id="${ch.id}" data-pts="${diff.points}"
+        ${isDone ? 'checked' : ''} onchange="adminProgToggle(this)" />
+        <span class="prog-ch-title">${escHtml(ch.title)}</span>
+        <span class="diff-badge" style="color:${diff.color}; border-color:${diff.color}; background:${diff.color}18; font-size:0.65rem; padding:2px 8px;">${diff.icon} ${diff.label}</span>
+        <span class="prog-pts" style="color:var(--cyan); font-family:var(--font-display); font-size:0.78rem; white-space:nowrap;">+${diff.points} pts</span>
+        </label>`;
       }).join('');
 
       html += `
-        <div class="prog-cat-block" style="margin-bottom:16px;">
-          <div class="prog-cat-header">
-            <span style="font-size:18px;">${cat.icon || '📁'}</span>
-            <span style="font-family:var(--font-display); font-size:0.72rem; color:${cat.color}; letter-spacing:0.08em;">${escHtml(cat.name)}</span>
-            <span style="font-size:0.68rem; color:var(--text-muted); margin-left:auto;">
-              ${challenges.filter(ch => completed.has(ch.id)).length}/${challenges.length}
-            </span>
-          </div>
-          <div class="prog-challenges-list">${rows}</div>
-        </div>`;
+      <div class="prog-cat-block" style="margin-bottom:16px;">
+      <div class="prog-cat-header">
+      <span style="font-size:18px;">${cat.icon || '📁'}</span>
+      <span style="font-family:var(--font-display); font-size:0.72rem; color:${cat.color}; letter-spacing:0.08em;">${escHtml(cat.name)}</span>
+      <span style="font-size:0.68rem; color:var(--text-muted); margin-left:auto;">
+      ${challenges.filter(ch => completed.has(ch.id)).length}/${challenges.length}
+      </span>
+      </div>
+      <div class="prog-challenges-list">${rows}</div>
+      </div>`;
     });
 
     if (!html) html = '<p style="color:var(--text-muted); text-align:center; padding:20px 0; font-size:0.82rem;">Sin desafíos para este filtro.</p>';
@@ -828,40 +922,40 @@ async function editTeamScore(teamId) {
       { val: 'hard',        label: '⭐⭐⭐' },
       { val: 'ieee-master', label: '👑' }
     ].map(f => `
-      <button class="filter-pill ${diffFilter === f.val ? 'active' : ''}"
-        onclick="adminProgFilter('${f.val}')">${f.label}</button>
+    <button class="filter-pill ${diffFilter === f.val ? 'active' : ''}"
+    onclick="adminProgFilter('${f.val}')">${f.label}</button>
     `).join('');
 
     return `
-      <div class="modal-title">📋 Progreso — ${escHtml(team.name)}</div>
+    <div class="modal-title">📋 Progreso — ${escHtml(team.name)}</div>
 
-      <!-- Stats strip -->
-      <div style="display:flex; gap:10px; margin-bottom:16px;">
-        <div style="flex:1; background:var(--bg-deep); border:1px solid var(--border); border-radius:8px; padding:10px; text-align:center;">
-          <div id="prog-score-display" style="font-family:var(--font-display); font-size:1.4rem; color:var(--cyan);">${score}</div>
-          <div style="font-size:0.62rem; color:var(--text-muted); letter-spacing:0.1em; margin-top:2px;">PUNTOS</div>
-        </div>
-        <div style="flex:1; background:var(--bg-deep); border:1px solid var(--border); border-radius:8px; padding:10px; text-align:center;">
-          <div id="prog-done-display" style="font-family:var(--font-display); font-size:1.4rem; color:var(--green);">${doneCount}</div>
-          <div style="font-size:0.62rem; color:var(--text-muted); letter-spacing:0.1em; margin-top:2px;">COMPLETADOS / ${totalCh}</div>
-        </div>
-      </div>
+    <!-- Stats strip -->
+    <div style="display:flex; gap:10px; margin-bottom:16px;">
+    <div style="flex:1; background:var(--bg-deep); border:1px solid var(--border); border-radius:8px; padding:10px; text-align:center;">
+    <div id="prog-score-display" style="font-family:var(--font-display); font-size:1.4rem; color:var(--cyan);">${score}</div>
+    <div style="font-size:0.62rem; color:var(--text-muted); letter-spacing:0.1em; margin-top:2px;">PUNTOS</div>
+    </div>
+    <div style="flex:1; background:var(--bg-deep); border:1px solid var(--border); border-radius:8px; padding:10px; text-align:center;">
+    <div id="prog-done-display" style="font-family:var(--font-display); font-size:1.4rem; color:var(--green);">${doneCount}</div>
+    <div style="font-size:0.62rem; color:var(--text-muted); letter-spacing:0.1em; margin-top:2px;">COMPLETADOS / ${totalCh}</div>
+    </div>
+    </div>
 
-      <!-- Filtro dificultad -->
-      <div style="margin-bottom:14px;">
-        <div style="font-family:var(--font-display); font-size:0.58rem; color:var(--text-muted); letter-spacing:0.12em; margin-bottom:8px;">FILTRAR POR DIFICULTAD</div>
-        <div class="filter-pills" id="prog-filter-pills">${filterBtns}</div>
-      </div>
+    <!-- Filtro dificultad -->
+    <div style="margin-bottom:14px;">
+    <div style="font-family:var(--font-display); font-size:0.58rem; color:var(--text-muted); letter-spacing:0.12em; margin-bottom:8px;">FILTRAR POR DIFICULTAD</div>
+    <div class="filter-pills" id="prog-filter-pills">${filterBtns}</div>
+    </div>
 
-      <!-- Lista de challenges -->
-      <div id="prog-challenges-wrap" style="max-height:400px; overflow-y:auto; padding-right:4px;">
-        ${buildChallengesHtml(diffFilter)}
-      </div>
+    <!-- Lista de challenges -->
+    <div id="prog-challenges-wrap" style="max-height:400px; overflow-y:auto; padding-right:4px;">
+    ${buildChallengesHtml(diffFilter)}
+    </div>
 
-      <div style="display:flex; gap:10px; justify-content:flex-end; margin-top:20px;">
-        <button class="btn btn-ghost" onclick="closeModal()">Cancelar</button>
-        <button class="btn btn-primary" onclick="saveTeamProgress('${teamId}')">💾 Guardar Progreso</button>
-      </div>`;
+    <div style="display:flex; gap:10px; justify-content:flex-end; margin-top:20px;">
+    <button class="btn btn-ghost" onclick="closeModal()">Cancelar</button>
+    <button class="btn btn-primary" onclick="saveTeamProgress('${teamId}')">💾 Guardar Progreso</button>
+    </div>`;
   }
 
   // Guardar estado del filtro en el modal
@@ -899,25 +993,25 @@ function adminProgFilter(diff) {
       const d = DIFFICULTY[ch.difficulty] || DIFFICULTY.basic;
       const isDone = completed.has(ch.id);
       return `
-        <label class="prog-challenge-row ${isDone ? 'done' : ''}" data-ch-id="${ch.id}">
-          <input type="checkbox" class="prog-cb" data-ch-id="${ch.id}" data-pts="${d.points}"
-            ${isDone ? 'checked' : ''} onchange="adminProgToggle(this)" />
-          <span class="prog-ch-title">${escHtml(ch.title)}</span>
-          <span class="diff-badge" style="color:${d.color}; border-color:${d.color}; background:${d.color}18; font-size:0.65rem; padding:2px 8px;">${d.icon} ${d.label}</span>
-          <span class="prog-pts" style="color:var(--cyan); font-family:var(--font-display); font-size:0.78rem; white-space:nowrap;">+${d.points} pts</span>
-        </label>`;
+      <label class="prog-challenge-row ${isDone ? 'done' : ''}" data-ch-id="${ch.id}">
+      <input type="checkbox" class="prog-cb" data-ch-id="${ch.id}" data-pts="${d.points}"
+      ${isDone ? 'checked' : ''} onchange="adminProgToggle(this)" />
+      <span class="prog-ch-title">${escHtml(ch.title)}</span>
+      <span class="diff-badge" style="color:${d.color}; border-color:${d.color}; background:${d.color}18; font-size:0.65rem; padding:2px 8px;">${d.icon} ${d.label}</span>
+      <span class="prog-pts" style="color:var(--cyan); font-family:var(--font-display); font-size:0.78rem; white-space:nowrap;">+${d.points} pts</span>
+      </label>`;
     }).join('');
     html += `
-      <div class="prog-cat-block" style="margin-bottom:16px;">
-        <div class="prog-cat-header">
-          <span style="font-size:18px;">${cat.icon || '📁'}</span>
-          <span style="font-family:var(--font-display); font-size:0.72rem; color:${cat.color}; letter-spacing:0.08em;">${escHtml(cat.name)}</span>
-          <span style="font-size:0.68rem; color:var(--text-muted); margin-left:auto;">
-            ${challenges.filter(ch => completed.has(ch.id)).length}/${challenges.length}
-          </span>
-        </div>
-        <div class="prog-challenges-list">${rows}</div>
-      </div>`;
+    <div class="prog-cat-block" style="margin-bottom:16px;">
+    <div class="prog-cat-header">
+    <span style="font-size:18px;">${cat.icon || '📁'}</span>
+    <span style="font-family:var(--font-display); font-size:0.72rem; color:${cat.color}; letter-spacing:0.08em;">${escHtml(cat.name)}</span>
+    <span style="font-size:0.68rem; color:var(--text-muted); margin-left:auto;">
+    ${challenges.filter(ch => completed.has(ch.id)).length}/${challenges.length}
+    </span>
+    </div>
+    <div class="prog-challenges-list">${rows}</div>
+    </div>`;
   });
   if (!html) html = '<p style="color:var(--text-muted); text-align:center; padding:20px 0; font-size:0.82rem;">Sin desafíos para este filtro.</p>';
   wrap.innerHTML = html;
@@ -1037,27 +1131,27 @@ function showToast(msg, type = 'info') {
 
 // ── IMPORTAR DESAFÍOS DESDE JSON ──────────────────────────
 /*
-  Formato esperado del JSON:
-  [
-    {
-      "category": "Algoritmia",                  // requerido
-      "categoryIcon": "⚡",                       // opcional
-      "categoryColor": "#F0A500",                // opcional
-      "title": "Suma de Arrays",                 // requerido
-      "difficulty": "basic|medium|hard|ieee-master", // requerido
-      "description": "...",                      // requerido
-      "inputFormat": "...",                      // opcional
-      "outputFormat": "...",                     // opcional
-      "examples": [                              // opcional
-        { "input": "1 2 3", "output": "6" }
-      ],
-      "hiddenTests": [                           // opcional
-        { "input": "4 5 6", "output": "15" }
-      ]
-    },
-    ...
-  ]
-*/
+ * Formato esperado del JSON:
+ * [
+ *   {
+ *     "category": "Algoritmia",                  // requerido
+ *     "categoryIcon": "⚡",                       // opcional
+ *     "categoryColor": "#F0A500",                // opcional
+ *     "title": "Suma de Arrays",                 // requerido
+ *     "difficulty": "basic|medium|hard|ieee-master", // requerido
+ *     "description": "...",                      // requerido
+ *     "inputFormat": "...",                      // opcional
+ *     "outputFormat": "...",                     // opcional
+ *     "examples": [                              // opcional
+ *       { "input": "1 2 3", "output": "6" }
+ *     ],
+ *     "hiddenTests": [                           // opcional
+ *       { "input": "4 5 6", "output": "15" }
+ *     ]
+ *   },
+ *   ...
+ * ]
+ */
 
 const VALID_DIFFICULTIES = ['basic', 'medium', 'hard', 'ieee-master'];
 
@@ -1151,12 +1245,12 @@ async function importChallengesJSON(input) {
 
     // Construir desafío
     const examples = Array.isArray(item.examples)
-      ? item.examples.filter(e => e && e.input !== undefined)
-      : [];
+    ? item.examples.filter(e => e && e.input !== undefined)
+    : [];
 
     const hiddenTests = Array.isArray(item.hiddenTests)
-      ? item.hiddenTests.filter(t => t && t.input !== undefined)
-      : [];
+    ? item.hiddenTests.filter(t => t && t.input !== undefined)
+    : [];
 
     const challenge = {
       id:           genId(),
@@ -1188,58 +1282,58 @@ function showImportReport(total, imported, errors) {
   const hasImported = imported.length > 0;
 
   const successHtml = hasImported ? `
-    <div style="margin-bottom:16px;">
-      <div style="color:var(--green); font-family:var(--font-display); font-size:0.75rem; letter-spacing:0.1em; margin-bottom:10px;">
-        ✅ IMPORTADOS (${imported.length})
-      </div>
-      <ul style="list-style:none; display:flex; flex-direction:column; gap:4px;">
-        ${imported.map(t => `
-          <li style="font-size:0.82rem; color:var(--text-secondary); padding:6px 10px; background:rgba(61,214,140,0.07); border-left:2px solid var(--green); border-radius:4px;">
-            ${escHtml(t)}
-          </li>`).join('')}
-      </ul>
+  <div style="margin-bottom:16px;">
+  <div style="color:var(--green); font-family:var(--font-display); font-size:0.75rem; letter-spacing:0.1em; margin-bottom:10px;">
+  ✅ IMPORTADOS (${imported.length})
+  </div>
+  <ul style="list-style:none; display:flex; flex-direction:column; gap:4px;">
+  ${imported.map(t => `
+    <li style="font-size:0.82rem; color:var(--text-secondary); padding:6px 10px; background:rgba(61,214,140,0.07); border-left:2px solid var(--green); border-radius:4px;">
+    ${escHtml(t)}
+    </li>`).join('')}
+    </ul>
     </div>` : '';
 
-  const errorHtml = hasErrors ? `
+    const errorHtml = hasErrors ? `
     <div>
-      <div style="color:var(--red); font-family:var(--font-display); font-size:0.75rem; letter-spacing:0.1em; margin-bottom:10px;">
-        ❌ NO IMPORTADOS (${errors.length})
-      </div>
-      <ul style="list-style:none; display:flex; flex-direction:column; gap:6px;">
-        ${errors.map(e => `
-          <li style="font-size:0.82rem; padding:8px 10px; background:rgba(255,64,96,0.07); border-left:2px solid var(--red); border-radius:4px;">
-            <span style="color:var(--text-primary); font-weight:600;">${escHtml(e.label)}</span>
-            <span style="color:var(--text-muted); display:block; font-size:0.75rem; margin-top:2px;">→ ${escHtml(e.reason)}</span>
-          </li>`).join('')}
+    <div style="color:var(--red); font-family:var(--font-display); font-size:0.75rem; letter-spacing:0.1em; margin-bottom:10px;">
+    ❌ NO IMPORTADOS (${errors.length})
+    </div>
+    <ul style="list-style:none; display:flex; flex-direction:column; gap:6px;">
+    ${errors.map(e => `
+      <li style="font-size:0.82rem; padding:8px 10px; background:rgba(255,64,96,0.07); border-left:2px solid var(--red); border-radius:4px;">
+      <span style="color:var(--text-primary); font-weight:600;">${escHtml(e.label)}</span>
+      <span style="color:var(--text-muted); display:block; font-size:0.75rem; margin-top:2px;">→ ${escHtml(e.reason)}</span>
+      </li>`).join('')}
       </ul>
-    </div>` : '';
+      </div>` : '';
 
-  const summary = `
-    <div style="display:flex; gap:16px; margin-bottom:20px; flex-wrap:wrap;">
+      const summary = `
+      <div style="display:flex; gap:16px; margin-bottom:20px; flex-wrap:wrap;">
       <div style="flex:1; min-width:100px; background:var(--bg-deep); border-radius:8px; padding:14px; text-align:center; border:1px solid var(--border);">
-        <div style="font-family:var(--font-display); font-size:1.4rem; color:var(--text-primary);">${total}</div>
-        <div style="font-size:0.65rem; color:var(--text-muted); letter-spacing:0.1em; margin-top:4px;">TOTAL</div>
+      <div style="font-family:var(--font-display); font-size:1.4rem; color:var(--text-primary);">${total}</div>
+      <div style="font-size:0.65rem; color:var(--text-muted); letter-spacing:0.1em; margin-top:4px;">TOTAL</div>
       </div>
       <div style="flex:1; min-width:100px; background:rgba(61,214,140,0.07); border-radius:8px; padding:14px; text-align:center; border:1px solid rgba(61,214,140,0.2);">
-        <div style="font-family:var(--font-display); font-size:1.4rem; color:var(--green);">${imported.length}</div>
-        <div style="font-size:0.65rem; color:var(--text-muted); letter-spacing:0.1em; margin-top:4px;">IMPORTADOS</div>
+      <div style="font-family:var(--font-display); font-size:1.4rem; color:var(--green);">${imported.length}</div>
+      <div style="font-size:0.65rem; color:var(--text-muted); letter-spacing:0.1em; margin-top:4px;">IMPORTADOS</div>
       </div>
       <div style="flex:1; min-width:100px; background:rgba(255,64,96,0.07); border-radius:8px; padding:14px; text-align:center; border:1px solid rgba(255,64,96,0.2);">
-        <div style="font-family:var(--font-display); font-size:1.4rem; color:${errors.length ? 'var(--red)' : 'var(--text-muted)'};">${errors.length}</div>
-        <div style="font-size:0.65rem; color:var(--text-muted); letter-spacing:0.1em; margin-top:4px;">ERRORES</div>
+      <div style="font-family:var(--font-display); font-size:1.4rem; color:${errors.length ? 'var(--red)' : 'var(--text-muted)'};">${errors.length}</div>
+      <div style="font-size:0.65rem; color:var(--text-muted); letter-spacing:0.1em; margin-top:4px;">ERRORES</div>
       </div>
-    </div>`;
+      </div>`;
 
-  showModal(`
-    <div class="modal-title">📥 Reporte de Importación</div>
-    ${summary}
-    <div style="max-height:360px; overflow-y:auto; display:flex; flex-direction:column; gap:12px;">
+      showModal(`
+      <div class="modal-title">📥 Reporte de Importación</div>
+      ${summary}
+      <div style="max-height:360px; overflow-y:auto; display:flex; flex-direction:column; gap:12px;">
       ${successHtml}
       ${errorHtml}
-    </div>
-    <div style="margin-top:20px; text-align:right;">
+      </div>
+      <div style="margin-top:20px; text-align:right;">
       <button class="btn btn-primary" onclick="closeModal()">Cerrar</button>
-    </div>`, true);
+      </div>`, true);
 }
 
 // ── BULK DELETE ───────────────────────────────────────────
@@ -1253,18 +1347,18 @@ function bulkBarHtml(wrapId, entityType) {
     challenges: 'desafío'
   };
   return `
-    <div class="bulk-bar" id="bulk-bar-${wrapId}" style="display:none;">
-      <span class="bulk-count" id="bulk-count-${wrapId}">0 seleccionados</span>
-      <div style="flex:1;"></div>
-      <button class="btn btn-ghost" style="font-size:0.78rem; padding:6px 14px;"
-              onclick="toggleAllCheckboxes('${wrapId}', false); updateBulkBar('${wrapId}')">
-        Deseleccionar todo
-      </button>
-      <button class="btn btn-danger" style="font-size:0.78rem; padding:6px 14px;"
-              onclick="bulkDelete('${wrapId}', '${entityType}', '${labels[entityType]}')">
-        🗑 Eliminar seleccionados
-      </button>
-    </div>`;
+  <div class="bulk-bar" id="bulk-bar-${wrapId}" style="display:none;">
+  <span class="bulk-count" id="bulk-count-${wrapId}">0 seleccionados</span>
+  <div style="flex:1;"></div>
+  <button class="btn btn-ghost" style="font-size:0.78rem; padding:6px 14px;"
+  onclick="toggleAllCheckboxes('${wrapId}', false); updateBulkBar('${wrapId}')">
+  Deseleccionar todo
+  </button>
+  <button class="btn btn-danger" style="font-size:0.78rem; padding:6px 14px;"
+  onclick="bulkDelete('${wrapId}', '${entityType}', '${labels[entityType]}')">
+  🗑 Eliminar seleccionados
+  </button>
+  </div>`;
 }
 
 // Muestra u oculta la barra según cuántos checkboxes están marcados
@@ -1306,8 +1400,8 @@ async function bulkDelete(wrapId, entityType, label) {
 
   const plural = ids.length === 1 ? `este ${label}` : `estos ${ids.length} ${label}s`;
   const extra  = entityType === 'categories'
-    ? ' (se eliminarán también todos sus desafíos)'
-    : '';
+  ? ' (se eliminarán también todos sus desafíos)'
+  : '';
 
   showConfirmAdmin(
     `¿Eliminar ${plural}?`,
@@ -1363,14 +1457,14 @@ function showConfirmAdmin(title, msg, onConfirm) {
   const overlay = document.createElement('div');
   overlay.className = 'modal-overlay';
   overlay.innerHTML = `
-    <div class="modal">
-      <div class="modal-title" style="color:var(--red);">⚠ ${title}</div>
-      <p style="color:var(--text-secondary); margin-bottom:20px; font-size:0.88rem;">${msg}</p>
-      <div style="display:flex; gap:10px; justify-content:flex-end;">
-        <button class="btn btn-ghost" onclick="this.closest('.modal-overlay').remove()">Cancelar</button>
-        <button class="btn btn-danger" id="bulk-confirm-ok">Eliminar</button>
-      </div>
-    </div>`;
+  <div class="modal">
+  <div class="modal-title" style="color:var(--red);">⚠ ${title}</div>
+  <p style="color:var(--text-secondary); margin-bottom:20px; font-size:0.88rem;">${msg}</p>
+  <div style="display:flex; gap:10px; justify-content:flex-end;">
+  <button class="btn btn-ghost" onclick="this.closest('.modal-overlay').remove()">Cancelar</button>
+  <button class="btn btn-danger" id="bulk-confirm-ok">Eliminar</button>
+  </div>
+  </div>`;
   document.body.appendChild(overlay);
   overlay.querySelector('#bulk-confirm-ok').addEventListener('click', () => {
     overlay.remove();
