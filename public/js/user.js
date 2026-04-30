@@ -502,9 +502,121 @@ async function awardPoints(ch) {
   team.completedChallenges = team.completedChallenges || [];
   if (team.completedChallenges.includes(ch.id)) return;
 
+  // Si el equipo tiene miembros registrados, mostrar modal de contribuciones
+  const members = team.members || [];
+  if (members.length > 0) {
+    showContributionModal(ch, team, diff, members);
+  } else {
+    // Sin miembros registrados, guardar directo
+    await _finalizeAward(ch, team, diff, []);
+  }
+}
+
+function showContributionModal(ch, team, diff, members) {
+  const checkboxes = members.map((m, i) => `
+    <label class="contrib-member-label" style="
+      display:flex; align-items:center; gap:12px;
+      padding:10px 14px;
+      background:var(--bg-deep);
+      border:1px solid var(--border);
+      border-radius:8px;
+      cursor:pointer;
+      transition:border-color 0.15s, background 0.15s;
+    " onmouseover="this.style.borderColor='var(--cyan)'" onmouseout="this.style.borderColor='var(--border)'">
+      <input type="checkbox" class="contrib-cb" id="contrib-cb-${i}" value="${escHtml(m)}"
+        style="width:16px;height:16px;accent-color:var(--cyan);cursor:pointer;" />
+      <span style="color:var(--text-primary); font-size:0.88rem;">${escHtml(m)}</span>
+    </label>`).join('');
+
+  const overlay = document.createElement('div');
+  overlay.className = 'modal-overlay';
+  overlay.id = 'contrib-modal-overlay';
+  overlay.innerHTML = `
+    <div class="modal" style="max-width:440px;">
+      <div style="text-align:center; margin-bottom:20px;">
+        <div style="font-size:40px; margin-bottom:10px;">🎉</div>
+        <div class="modal-title" style="color:var(--green);">¡Solución Correcta!</div>
+        <p style="color:var(--text-secondary); font-size:0.82rem; margin-top:6px;">
+          <strong style="color:var(--cyan);">${escHtml(ch.title)}</strong>
+          · +${diff.points} pt${diff.points !== 1 ? 's' : ''}
+        </p>
+      </div>
+      <div style="
+        background:rgba(0,245,255,0.05);
+        border:1px solid rgba(0,245,255,0.2);
+        border-radius:8px;
+        padding:12px 14px;
+        margin-bottom:16px;
+      ">
+        <div style="font-family:var(--font-display); font-size:0.7rem; color:var(--cyan); letter-spacing:0.1em; margin-bottom:10px;">
+          ¿QUIÉNES TRABAJARON EN ESTE EJERCICIO?
+        </div>
+        <p style="color:var(--text-muted); font-size:0.75rem; margin-bottom:12px;">
+          Selecciona a los integrantes que participaron en resolver este desafío.
+        </p>
+        <div style="display:flex; flex-direction:column; gap:8px;" id="contrib-members-list">
+          ${checkboxes}
+        </div>
+        <div style="margin-top:10px; display:flex; gap:8px; flex-wrap:wrap;">
+          <button class="btn btn-ghost" style="font-size:0.72rem; padding:5px 10px;"
+            onclick="document.querySelectorAll('.contrib-cb').forEach(cb=>cb.checked=true)">
+            Seleccionar todos
+          </button>
+          <button class="btn btn-ghost" style="font-size:0.72rem; padding:5px 10px;"
+            onclick="document.querySelectorAll('.contrib-cb').forEach(cb=>cb.checked=false)">
+            Limpiar
+          </button>
+        </div>
+      </div>
+      <div style="display:flex; gap:10px; justify-content:flex-end;">
+        <button class="btn btn-ghost" onclick="submitContributionModal(false)" style="font-size:0.82rem;">
+          Omitir
+        </button>
+        <button class="btn btn-primary" onclick="submitContributionModal(true)" style="font-size:0.82rem;">
+          ✅ Confirmar y continuar
+        </button>
+      </div>
+    </div>`;
+  document.body.appendChild(overlay);
+
+  // Store reference for the async submit
+  overlay._ch   = ch;
+  overlay._team = team;
+  overlay._diff = diff;
+}
+
+async function submitContributionModal(save) {
+  const overlay = document.getElementById('contrib-modal-overlay');
+  if (!overlay) return;
+
+  let selectedMembers = [];
+  if (save) {
+    overlay.querySelectorAll('.contrib-cb:checked').forEach(cb => {
+      selectedMembers.push(cb.value);
+    });
+  }
+
+  const ch   = overlay._ch;
+  const team = overlay._team;
+  const diff = overlay._diff;
+  overlay.remove();
+
+  await _finalizeAward(ch, team, diff, selectedMembers);
+}
+
+async function _finalizeAward(ch, team, diff, contributingMembers) {
   team.completedChallenges.push(ch.id);
   team.score = (team.score || 0) + diff.points;
   await Store.saveTeam(team);
+
+  // Save contributions if any members selected
+  if (contributingMembers.length > 0) {
+    try {
+      await Store.saveContributions(team.id, ch.id, contributingMembers);
+    } catch (e) {
+      console.warn('Could not save contributions:', e.message);
+    }
+  }
 
   currentTeam = team;
   setCurrentTeam(currentTeam);

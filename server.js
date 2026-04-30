@@ -131,6 +131,16 @@ db.exec(`
     sort_order    INTEGER NOT NULL DEFAULT 0,
     FOREIGN KEY (category_id) REFERENCES categories(id) ON DELETE CASCADE
   );
+
+  CREATE TABLE IF NOT EXISTS member_contributions (
+    id           TEXT PRIMARY KEY,
+    team_id      TEXT NOT NULL,
+    challenge_id TEXT NOT NULL,
+    member_name  TEXT NOT NULL,
+    created_at   TEXT NOT NULL DEFAULT (datetime('now')),
+    UNIQUE(team_id, challenge_id, member_name),
+    FOREIGN KEY (team_id) REFERENCES teams(id) ON DELETE CASCADE
+  );
 `);
 
 // ── Datos por defecto ──────────────────────────────────────
@@ -541,6 +551,48 @@ app.patch("/api/teams/:id/progress", (req, res) => {
       id
     );
   res.json({ ok: true });
+});
+
+// ── RUTA: registrar contribuciones de miembros ─────────────
+// Llamada cuando un equipo completa un challenge e indica quiénes participaron
+app.post("/api/teams/:id/contributions", (req, res) => {
+  const { id } = req.params;
+  const { challengeId, members } = req.body;
+
+  const team = db.prepare("SELECT * FROM teams WHERE id=?").get(id);
+  if (!team) return res.status(404).json({ error: "Equipo no encontrado" });
+  if (!challengeId || !Array.isArray(members))
+    return res.status(400).json({ error: "challengeId y members requeridos" });
+
+  const insert = db.prepare(`
+    INSERT OR IGNORE INTO member_contributions (id, team_id, challenge_id, member_name)
+    VALUES (?, ?, ?, ?)
+  `);
+
+  const insertAll = db.transaction(() => {
+    for (const member of members) {
+      const cid = Date.now().toString(36) + Math.random().toString(36).substr(2, 5);
+      insert.run(cid, id, challengeId, member.trim());
+    }
+  });
+  insertAll();
+  res.json({ ok: true });
+});
+
+// ── RUTA: obtener contribuciones (solo admin) ──────────────
+app.get("/api/contributions", requireAdminAuth, (req, res) => {
+  const rows = db.prepare(`
+    SELECT mc.team_id, mc.challenge_id, mc.member_name,
+           t.name as team_name,
+           c.title as challenge_title, c.category_id,
+           cat.name as category_name, cat.color as category_color, cat.icon as category_icon
+    FROM member_contributions mc
+    JOIN teams t ON t.id = mc.team_id
+    JOIN challenges c ON c.id = mc.challenge_id
+    JOIN categories cat ON cat.id = c.category_id
+    ORDER BY mc.created_at
+  `).all();
+  res.json(rows);
 });
 
 // ── RUTAS: categories ──────────────────────────────────────

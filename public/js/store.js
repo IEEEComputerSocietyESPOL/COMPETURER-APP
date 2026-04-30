@@ -94,6 +94,16 @@ const Store = {
   },
   async deleteChallenge(catId, challengeId) {
     await _apiFetch(`/categories/${catId}/challenges/${challengeId}`, { method: "DELETE" });
+  },
+  async saveContributions(teamId, challengeId, members) {
+    await _apiFetch(`/teams/${teamId}/contributions`, {
+      method: "POST",
+      body: JSON.stringify({ challengeId, members })
+    });
+  },
+  async getContributions() {
+    try { return await _apiFetch("/contributions"); }
+    catch { return []; }
   }
 };
 

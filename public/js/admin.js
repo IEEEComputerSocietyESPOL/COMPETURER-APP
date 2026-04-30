@@ -78,15 +78,16 @@ function adminTab(name) {
   document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active'));
   document.querySelectorAll('.admin-page').forEach(p => p.classList.remove('active'));
 
-  const tabs = ['config','admins','teams','categories','challenges','ranking'];
+  const tabs = ['config','admins','teams','categories','challenges','ranking','rendimiento'];
   document.querySelectorAll('.admin-tab')[tabs.indexOf(name)]?.classList.add('active');
   document.getElementById(`ap-${name}`)?.classList.add('active');
 
-  if (name === 'admins')     renderAdminsTable();
-  if (name === 'teams')      renderTeamsTable();
-  if (name === 'categories') renderCatsTable();
-  if (name === 'challenges') { populateCatFilter(); renderChallengesTable(); }
-  if (name === 'ranking')    renderAdminRanking();
+  if (name === 'admins')      renderAdminsTable();
+  if (name === 'teams')       renderTeamsTable();
+  if (name === 'categories')  renderCatsTable();
+  if (name === 'challenges')  { populateCatFilter(); renderChallengesTable(); }
+  if (name === 'ranking')     renderAdminRanking();
+  if (name === 'rendimiento') renderRendimiento();
 }
 
 // ── Load initial data ─────────────────────────────────────
@@ -1470,4 +1471,264 @@ function showConfirmAdmin(title, msg, onConfirm) {
     overlay.remove();
     onConfirm();
   });
+}
+
+// ── RENDIMIENTO ───────────────────────────────────────────
+async function renderRendimiento() {
+  const wrap = document.getElementById('ap-rendimiento');
+  if (!wrap) return;
+
+  wrap.innerHTML = `
+  <div class="section-header" style="display:flex; align-items:center; gap:12px; margin-bottom:20px;">
+    <div style="flex:1;">
+      <h3 class="section-title">📊 RENDIMIENTO DE ESTUDIANTES</h3>
+      <div class="section-line"></div>
+    </div>
+    <button class="btn btn-ghost" style="padding:7px 14px; font-size:0.78rem;" onclick="renderRendimiento()">🔄 Actualizar</button>
+  </div>
+  <div id="rendimiento-content" style="color:var(--text-muted); text-align:center; padding:40px;">
+    <div class="spinner" style="margin:0 auto 12px;"></div>
+    <div>Cargando datos...</div>
+  </div>`;
+
+  try {
+    const [contributions, teams, categories] = await Promise.all([
+      Store.getContributions(),
+      Store.getTeams(),
+      Store.getCategories()
+    ]);
+
+    // Build lookup maps
+    const teamMap = {};
+    teams.forEach(t => { teamMap[t.id] = t; });
+
+    const catMap = {};
+    const challengeMap = {};
+    const challengeCatMap = {};
+    categories.forEach(cat => {
+      catMap[cat.id] = cat;
+      (cat.challenges || []).forEach(ch => {
+        challengeMap[ch.id] = ch;
+        challengeCatMap[ch.id] = cat.id;
+      });
+    });
+
+    // Build per-challenge contribution count (how many members marked per challenge per team)
+    // Structure: { teamId: { challengeId: [memberNames] } }
+    const teamChallengeMembers = {};
+    contributions.forEach(c => {
+      if (!teamChallengeMembers[c.team_id]) teamChallengeMembers[c.team_id] = {};
+      if (!teamChallengeMembers[c.team_id][c.challenge_id]) teamChallengeMembers[c.team_id][c.challenge_id] = [];
+      teamChallengeMembers[c.team_id][c.challenge_id].push(c.member_name);
+    });
+
+    // Build per-member stats
+    // memberStats[teamId][memberName] = { challengeIds: Set, categories: { catId: { challengeId: participationPct } } }
+    const memberStats = {};
+
+    teams.forEach(team => {
+      memberStats[team.id] = {};
+      (team.members || []).forEach(m => {
+        memberStats[team.id][m] = { challenges: {}, totalTeamChallenges: team.completedChallenges?.length || 0 };
+      });
+    });
+
+    // For each team challenge, compute per-member participation %
+    Object.entries(teamChallengeMembers).forEach(([teamId, challenges]) => {
+      Object.entries(challenges).forEach(([challengeId, membersWhoWorked]) => {
+        const participationPct = membersWhoWorked.length > 0
+          ? Math.round(100 / membersWhoWorked.length)
+          : 0;
+
+        membersWhoWorked.forEach(member => {
+          if (!memberStats[teamId]) return;
+          if (!memberStats[teamId][member]) {
+            memberStats[teamId][member] = { challenges: {}, totalTeamChallenges: teamMap[teamId]?.completedChallenges?.length || 0 };
+          }
+          memberStats[teamId][member].challenges[challengeId] = {
+            participationPct,
+            totalWorked: membersWhoWorked.length
+          };
+        });
+      });
+    });
+
+    // Check if we have any contribution data
+    const hasData = contributions.length > 0;
+
+    const contentEl = document.getElementById('rendimiento-content');
+
+    if (!hasData) {
+      contentEl.innerHTML = `
+      <div style="text-align:center; padding:60px 20px;">
+        <div style="font-size:48px; margin-bottom:16px;">📋</div>
+        <div style="font-family:var(--font-display); color:var(--text-muted); font-size:0.85rem; letter-spacing:0.1em;">
+          AÚN NO HAY DATOS DE CONTRIBUCIÓN
+        </div>
+        <p style="color:var(--text-muted); font-size:0.78rem; margin-top:10px; max-width:360px; margin-left:auto; margin-right:auto;">
+          Los datos aparecerán aquí cuando los equipos resuelvan desafíos y seleccionen quiénes participaron.
+        </p>
+      </div>`;
+      return;
+    }
+
+    // Render: one section per team, sorted by score desc
+    const sortedTeams = [...teams].sort((a,b) => (b.score||0) - (a.score||0));
+
+    let html = '';
+
+    sortedTeams.forEach((team, teamIdx) => {
+      const members = team.members || [];
+      if (!members.length) return;
+
+      const teamContribs = teamChallengeMembers[team.id] || {};
+      const totalTeamChallenges = team.completedChallenges?.length || 0;
+
+      // Per-member rows
+      const memberRows = members.map(member => {
+        const mStats = memberStats[team.id]?.[member] || { challenges: {} };
+        const mChallenges = mStats.challenges;
+        const mChallengeCount = Object.keys(mChallenges).length;
+        const memberPct = totalTeamChallenges > 0
+          ? Math.round(mChallengeCount / totalTeamChallenges * 100)
+          : 0;
+
+        // Group by category
+        const byCat = {};
+        Object.entries(mChallenges).forEach(([chId, stats]) => {
+          const catId = challengeCatMap[chId];
+          if (!catId) return;
+          if (!byCat[catId]) byCat[catId] = [];
+          byCat[catId].push({ chId, stats });
+        });
+
+        // Build category breakdown
+        const catBreakdown = Object.entries(byCat).map(([catId, challenges]) => {
+          const cat = catMap[catId];
+          if (!cat) return '';
+          const avgParticipation = challenges.length > 0
+            ? Math.round(challenges.reduce((s,c) => s + c.stats.participationPct, 0) / challenges.length)
+            : 0;
+
+          const chList = challenges.map(({chId, stats}) => {
+            const ch = challengeMap[chId];
+            const diff = ch ? (DIFFICULTY[ch.difficulty] || DIFFICULTY.basic) : DIFFICULTY.basic;
+            return `
+            <div style="display:flex; align-items:center; justify-content:space-between;
+              padding:5px 10px; background:var(--bg-void); border-radius:6px; margin-bottom:4px;">
+              <div style="display:flex; align-items:center; gap:8px;">
+                <span style="font-size:11px;" title="${escHtml(diff.label)}">${diff.icon}</span>
+                <span style="color:var(--text-secondary); font-size:0.78rem;">${escHtml(ch?.title || chId)}</span>
+              </div>
+              <div style="display:flex; align-items:center; gap:8px;">
+                <span style="font-size:0.7rem; color:var(--text-muted);">${stats.totalWorked} integrante${stats.totalWorked !== 1 ? 's' : ''}</span>
+                <span style="
+                  font-family:var(--font-display); font-size:0.72rem;
+                  color:${stats.participationPct >= 75 ? 'var(--green)' : stats.participationPct >= 40 ? 'var(--orange)' : 'var(--cyan)'};
+                  min-width:36px; text-align:right;
+                ">${stats.participationPct}%</span>
+              </div>
+            </div>`;
+          }).join('');
+
+          return `
+          <div style="margin-bottom:10px;">
+            <div style="display:flex; align-items:center; gap:6px; margin-bottom:6px;">
+              <span style="font-size:14px;">${cat.icon || '📁'}</span>
+              <span style="font-size:0.75rem; color:${cat.color}; font-family:var(--font-display); letter-spacing:0.06em;">${escHtml(cat.name)}</span>
+              <span style="font-size:0.68rem; color:var(--text-muted); margin-left:auto; background:var(--bg-void); padding:2px 7px; border-radius:10px;">
+                ~${avgParticipation}% participación
+              </span>
+            </div>
+            ${chList}
+          </div>`;
+        }).join('');
+
+        // Color for % completed
+        const pctColor = memberPct >= 70 ? 'var(--green)' : memberPct >= 40 ? 'var(--orange)' : 'var(--red)';
+        const memberId = `member-${team.id}-${member.replace(/\s+/g,'_')}`;
+
+        return `
+        <div style="border:1px solid var(--border); border-radius:10px; overflow:hidden; margin-bottom:12px;">
+          <!-- Member header (clickable) -->
+          <div style="
+            display:flex; align-items:center; gap:14px;
+            padding:14px 18px;
+            background:var(--bg-deep);
+            cursor:pointer;
+          " onclick="toggleRendCollapsible('${memberId}')">
+            <div style="
+              width:36px; height:36px; border-radius:50%;
+              background:linear-gradient(135deg, var(--cyan-dim), rgba(0,245,255,0.05));
+              border:1px solid var(--cyan-dim);
+              display:flex; align-items:center; justify-content:center;
+              font-family:var(--font-display); font-size:0.85rem; color:var(--cyan);
+              flex-shrink:0;
+            ">${escHtml(member.charAt(0).toUpperCase())}</div>
+            <div style="flex:1; min-width:0;">
+              <div style="color:var(--text-primary); font-weight:600; font-size:0.9rem; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${escHtml(member)}</div>
+              <div style="font-size:0.7rem; color:var(--text-muted); margin-top:2px;">
+                ${mChallengeCount} desafío${mChallengeCount !== 1 ? 's' : ''} con participación registrada
+              </div>
+            </div>
+            <!-- % of team challenges -->
+            <div style="text-align:right; flex-shrink:0;">
+              <div style="font-family:var(--font-display); font-size:1.1rem; color:${pctColor}; font-weight:700;">${memberPct}%</div>
+              <div style="font-size:0.65rem; color:var(--text-muted);">del equipo</div>
+            </div>
+            <div style="color:var(--text-muted); font-size:12px; margin-left:4px; flex-shrink:0;">▼</div>
+          </div>
+          <!-- Progress bar -->
+          <div style="height:3px; background:var(--bg-void);">
+            <div style="height:100%; width:${memberPct}%; background:${pctColor}; transition:width 0.4s;"></div>
+          </div>
+          <!-- Expandable category breakdown -->
+          <div id="${memberId}" class="rend-collapsible" style="display:none; padding:14px 18px; background:var(--bg-card);">
+            ${catBreakdown || '<p style="color:var(--text-muted); font-size:0.78rem; padding:6px 0;">No hay detalle disponible.</p>'}
+          </div>
+        </div>`;
+      }).join('');
+
+      if (!memberRows.trim()) return;
+
+      const teamRankIcon = teamIdx === 0 ? '🥇' : teamIdx === 1 ? '🥈' : teamIdx === 2 ? '🥉' : `#${teamIdx+1}`;
+
+      html += `
+      <div class="card" style="margin-bottom:20px;">
+        <div style="display:flex; align-items:center; gap:12px; margin-bottom:16px; padding-bottom:14px; border-bottom:1px solid var(--border);">
+          <span style="font-size:22px;">${teamRankIcon}</span>
+          <div>
+            <div style="font-family:var(--font-display); color:var(--text-primary); font-size:0.88rem; letter-spacing:0.07em;">${escHtml(team.name)}</div>
+            <div style="font-size:0.7rem; color:var(--text-muted); margin-top:2px;">
+              ${members.length} integrante${members.length !== 1 ? 's' : ''} · ${totalTeamChallenges} desafío${totalTeamChallenges !== 1 ? 's' : ''} completados · ${team.score ?? 0} pts
+            </div>
+          </div>
+        </div>
+        ${memberRows}
+      </div>`;
+    });
+
+    contentEl.innerHTML = html || `
+    <div style="text-align:center; padding:40px; color:var(--text-muted); font-size:0.85rem;">
+      No hay equipos con miembros registrados aún.
+    </div>`;
+
+    // Toggle collapsibles
+    document.querySelectorAll('.rend-collapsible').forEach(el => {
+      el.style.display = 'none';
+    });
+
+  } catch(e) {
+    document.getElementById('rendimiento-content').innerHTML = `
+    <div style="color:var(--red); text-align:center; padding:40px;">
+      ❌ Error al cargar datos: ${escHtml(e.message)}
+    </div>`;
+  }
+}
+
+// Helper for rendimiento collapsible panels
+function toggleRendCollapsible(id) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.style.display = el.style.display === 'none' ? 'block' : 'none';
 }
